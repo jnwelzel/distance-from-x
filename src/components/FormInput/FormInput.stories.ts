@@ -23,5 +23,6 @@ export const WithErrorMessage: Story = {
   args: {
     errorMessage: "Wrong password",
     label: "Password",
+    id: "with-error",
   },
 };
