@@ -35,3 +35,23 @@ export const calculateDistance = (
     return 0.0;
   }
 };
+
+/**
+ * Checks whether a provided latitude value is valid or not.
+ * @param lat Latitude value to be validated
+ * @returns `true` if the latitude is valid or `false` otherwise.
+ */
+export const isValidLatitude = (lat: string) => {
+  const latRegex = /^-?([1-8]?[0-9](\.\d+)?|90(\.0+)?)$/;
+  return latRegex.test(lat);
+};
+
+/**
+ * Checks whether a provided longitude value is valid or not.
+ * @param lon Longitude value to be validated
+ * @returns `true` if the longitude is valid or `false` otherwise.
+ */
+export const isValidLongitude = (lon: string) => {
+  const lonRegex = /^-?((1?[0-7]?[0-9](\.\d+)?|180(\.0+)?))$/;
+  return lonRegex.test(lon);
+};
