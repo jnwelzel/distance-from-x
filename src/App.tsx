@@ -5,6 +5,7 @@ import {
   isValidLatitude,
   isValidLongitude,
 } from "./helpers/coordinates";
+import { FormInput } from "./components";
 
 interface IFormState {
   lat1: string;
@@ -78,74 +79,45 @@ function App() {
     <div className="bg-slate-700 flex flex-col items-center">
       <h1 className="text-white">
         Calculate the distance (in kilometers) between two geographic
-        coordinates
+        coordinates in a straight line.
       </h1>
       <form onSubmit={handleSubmit} className="grid gap-4">
-        <label className="flex flex-col text-white">
-          <span>Latitude 1</span>
-          <input
-            className={`text-slate-800 ${
-              errors?.lat1 ? "border-2 border-solid border-red-500" : ""
-            }`}
-            value={inputs.lat1 || ""}
-            name="lat1"
-            type="text"
-            placeholder="52.7579522"
-            onChange={handleChange}
-          />
-          {errors?.lat1 ? (
-            <span className="text-red-500">{errors.lat1}</span>
-          ) : null}
-        </label>
-        <label className="flex flex-col text-white">
-          <span>Longitude 1</span>
-          <input
-            className={`text-slate-800 ${
-              errors?.lon1 ? "border-2 border-solid border-red-500" : ""
-            }`}
-            value={inputs.lon1 || ""}
-            name="lon1"
-            type="text"
-            placeholder="13.2516223"
-            onChange={handleChange}
-          />
-          {errors?.lon1 ? (
-            <span className="text-red-500">{errors.lon1}</span>
-          ) : null}
-        </label>
-
-        <label className="flex flex-col text-white">
-          <span>Latitude 2</span>
-          <input
-            className={`text-slate-800 ${
-              errors?.lat2 ? "border-2 border-solid border-red-500" : ""
-            }`}
-            value={inputs.lat2 || ""}
-            name="lat2"
-            type="text"
-            placeholder="52.7612306"
-            onChange={handleChange}
-          />
-          {errors?.lat2 ? (
-            <span className="text-red-500">{errors.lat2}</span>
-          ) : null}
-        </label>
-        <label className="flex flex-col text-white">
-          <span>Longitude 2</span>
-          <input
-            className={`text-slate-800 ${
-              errors?.lon2 ? "border-2 border-solid border-red-500" : ""
-            }`}
-            value={inputs.lon2 || ""}
-            name="lon2"
-            type="text"
-            placeholder="13.2677626"
-            onChange={handleChange}
-          />
-          {errors?.lon2 ? (
-            <span className="text-red-500">{errors.lon2}</span>
-          ) : null}
-        </label>
+        <FormInput
+          label="Latitute"
+          errorMessage={errors?.lat1}
+          value={inputs.lat1 || ""}
+          id="lat1"
+          type="text"
+          placeholder="52.7579522"
+          onChange={handleChange}
+        />
+        <FormInput
+          errorMessage={errors?.lon1}
+          label="Longitude"
+          value={inputs.lon1 || ""}
+          id="lon1"
+          type="text"
+          placeholder="13.2516223"
+          onChange={handleChange}
+        />
+        <FormInput
+          label="Latitude"
+          errorMessage={errors?.lat2}
+          value={inputs.lat2 || ""}
+          id="lat2"
+          type="text"
+          placeholder="52.7612306"
+          onChange={handleChange}
+        />
+        <FormInput
+          errorMessage={errors?.lon2}
+          label="Longitude"
+          value={inputs.lon2 || ""}
+          id="lon2"
+          type="text"
+          placeholder="13.2677626"
+          onChange={handleChange}
+        />
 
         <button type="submit" className="bg-sky-500 py-2 text-white">
           Calculate
