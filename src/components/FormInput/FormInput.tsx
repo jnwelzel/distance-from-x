@@ -11,19 +11,19 @@ export const FormInput: FC<IInputProps> = (props) => {
   return (
     <span className="flex flex-col">
       {label ? (
-        <label className="text-white" htmlFor={id}>
+        <label className="text-slate-800 py-1" htmlFor={id}>
           {label}
         </label>
       ) : null}
       <input
         {...restProps}
-        className={`text-slate-800 ${
-          errorMessage ? "border-2 border-solid border-red-500" : ""
+        className={`text-slate-800 shadow border-solid border rounded p-2 ${
+          errorMessage ? "border-red-600" : ""
         }`}
         id={id}
       />
       {errorMessage ? (
-        <span className="text-red-500">{errorMessage}</span>
+        <span className="text-red-600 py-1 italic text-sm">{errorMessage}</span>
       ) : null}
       <span></span>
     </span>

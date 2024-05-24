@@ -76,8 +76,8 @@ function App() {
   };
 
   return (
-    <div className="bg-slate-700 flex flex-col items-center">
-      <h1 className="text-white">
+    <div className="flex flex-col items-center">
+      <h1>
         Calculate the distance (in kilometers) between two geographic
         coordinates in a straight line.
       </h1>
