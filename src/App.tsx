@@ -4,8 +4,8 @@ import {
   calculateDistance,
   isValidLatitude,
   isValidLongitude,
-} from "./helpers/coordinates";
-import { FormInput } from "./components";
+} from "./helpers";
+import { Button, FormInput } from "./components";
 
 interface IFormState {
   lat1: string;
@@ -119,9 +119,12 @@ function App() {
           onChange={handleChange}
         />
 
-        <button type="submit" className="bg-sky-500 py-2 text-white">
+        <Button
+          type="submit"
+          className="bg-sky-500 py-2 text-white rounded border border-sky-600 shadow"
+        >
           Calculate
-        </button>
+        </Button>
       </form>
 
       {distance > 0 ? (
