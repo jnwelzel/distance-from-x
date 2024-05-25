@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import { CoordinatesForm } from "./components";
 import {
@@ -29,7 +29,12 @@ function App() {
     lon2: "",
   });
 
-  const [distance, setDistance] = useState<number>(0);
+  const [kilometers, setKilometers] = useState<number>(0);
+  const [miles, setMiles] = useState<number>(0);
+
+  useEffect(() => {
+    setMiles(Number((kilometers * 0.621371).toFixed(2)));
+  }, [kilometers]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputs((prevState) => ({
@@ -72,24 +77,26 @@ function App() {
       parseFloat(inputs.lat2),
       parseFloat(inputs.lon2)
     );
-    setDistance(result);
+    setKilometers(result);
   };
   return (
-    <div className="grid grid-flow-row gap-4 p-4 md:max-w-3xl md:mx-auto">
-      <h1>
-        Calculate the distance (in kilometers) between two geographic
-        coordinates in a straight line.
+    <body>
+      <h1 className="text-white drop-shadow shadow bg-gradient-to-r from-cyan-500 to-blue-500 text-center p-6 text-2xl md:p-20 md:text-6xl">
+        Calculate the distance between two geographic coordinates in a straight
+        line
       </h1>
-      <CoordinatesForm
-        handleSubmit={handleSubmit}
-        errors={errors}
-        handleChange={handleChange}
-        inputs={inputs}
-      />
-      <p>
-        <b>Distance:</b> {distance}km
-      </p>
-    </div>
+      <div className="grid grid-flow-row gap-4 p-4 md:max-w-3xl md:mx-auto">
+        <CoordinatesForm
+          handleSubmit={handleSubmit}
+          errors={errors}
+          handleChange={handleChange}
+          inputs={inputs}
+        />
+        <p className="text-xl">
+          <b>Distance:</b> {kilometers}km ({miles}mi)
+        </p>
+      </div>
+    </body>
   );
 }
 
