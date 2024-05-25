@@ -14,7 +14,7 @@ export const CoordinatesForm: FC<ICoordinatesFormProps> = (props) => {
   const { handleSubmit, handleChange, errors, inputs } = props;
   return (
     <form onSubmit={handleSubmit} className="grid md:grid-cols-2 gap-4 w-full">
-      <p className="col-span-12 md:col-span-full">Point A</p>
+      <p className="col-span-12 md:col-span-full font-bold">Point A</p>
       <FormInput
         label="Latitute"
         errorMessage={errors?.lat1}
@@ -37,7 +37,7 @@ export const CoordinatesForm: FC<ICoordinatesFormProps> = (props) => {
         onChange={handleChange}
         containerClass="col-span-12 md:col-span-1"
       />
-      <p className="col-span-12 md:col-span-full">Point B</p>
+      <p className="col-span-12 md:col-span-full font-bold">Point B</p>
       <FormInput
         label="Latitude"
         errorMessage={errors?.lat2}
