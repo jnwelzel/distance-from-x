@@ -11,6 +11,7 @@ type ButtonVariants = `${ButtonVariant}`;
 
 interface IButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariants;
+  className?: string;
 }
 
 const colors = {
@@ -37,12 +38,12 @@ const colors = {
 };
 
 export const Button: FC<IButtonProps> = (props) => {
-  const { variant = "primary", ...restProps } = props;
+  const { variant = "primary", className, ...restProps } = props;
 
   return (
     <button
       {...restProps}
-      className={`py-2 px-5 ${colors[variant].background} ${colors[variant].border} ${colors[variant].text} rounded border shadow`}
+      className={`py-2 px-5 ${colors[variant].background} ${colors[variant].border} ${colors[variant].text} rounded border shadow ${className}`}
     />
   );
 };

@@ -77,7 +77,8 @@ export const CoordinatesForm: FC = () => {
   };
   return (
     <>
-      <form onSubmit={handleSubmit} className="grid gap-4">
+      <form onSubmit={handleSubmit} className="grid grid-cols-3 gap-4">
+        <p className="self-center place-self-end">Point A</p>
         <FormInput
           label="Latitute"
           errorMessage={errors?.lat1}
@@ -98,6 +99,7 @@ export const CoordinatesForm: FC = () => {
           placeholder="13.2516223"
           onChange={handleChange}
         />
+        <p className="self-center place-self-end">Point B</p>
         <FormInput
           label="Latitude"
           errorMessage={errors?.lat2}
@@ -119,7 +121,9 @@ export const CoordinatesForm: FC = () => {
           onChange={handleChange}
         />
 
-        <Button type="submit">Calculate</Button>
+        <Button type="submit" className="col-span-3 place-self-center">
+          Calculate
+        </Button>
       </form>
       {distance > 0 ? <div>Distance: {distance}km</div> : null}
     </>
