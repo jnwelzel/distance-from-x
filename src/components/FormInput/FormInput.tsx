@@ -3,13 +3,14 @@ import { FC } from "react";
 interface IInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   errorMessage?: string;
   label?: string;
+  containerClass?: string;
 }
 
 export const FormInput: FC<IInputProps> = (props) => {
-  const { errorMessage, label, id, ...restProps } = props;
+  const { errorMessage, label, id, containerClass, ...restProps } = props;
 
   return (
-    <span className="flex flex-col">
+    <span className={`${containerClass} flex flex-col`}>
       {label ? (
         <label className="text-slate-800 py-1" htmlFor={id}>
           {label}

@@ -13,8 +13,10 @@ interface ICoordinatesFormProps {
 export const CoordinatesForm: FC<ICoordinatesFormProps> = (props) => {
   const { handleSubmit, handleChange, errors, inputs } = props;
   return (
-    <form onSubmit={handleSubmit} className="grid grid-cols-3 gap-4">
-      <p className="self-center place-self-end">Point A</p>
+    <form onSubmit={handleSubmit} className="grid md:grid-cols-3 gap-4 w-full">
+      <p className="col-span-12 md:col-span-1 md:self-center md:place-self-end">
+        Point A
+      </p>
       <FormInput
         label="Latitute"
         errorMessage={errors?.lat1}
@@ -24,6 +26,7 @@ export const CoordinatesForm: FC<ICoordinatesFormProps> = (props) => {
         type="text"
         placeholder="52.7579522"
         onChange={handleChange}
+        containerClass="col-span-12 md:col-span-1"
       />
       <FormInput
         errorMessage={errors?.lon1}
@@ -34,8 +37,11 @@ export const CoordinatesForm: FC<ICoordinatesFormProps> = (props) => {
         type="text"
         placeholder="13.2516223"
         onChange={handleChange}
+        containerClass="col-span-12 md:col-span-1"
       />
-      <p className="self-center place-self-end">Point B</p>
+      <p className="col-span-12 md:col-span-1 md:self-center md:place-self-end">
+        Point B
+      </p>
       <FormInput
         label="Latitude"
         errorMessage={errors?.lat2}
@@ -45,6 +51,7 @@ export const CoordinatesForm: FC<ICoordinatesFormProps> = (props) => {
         type="text"
         placeholder="52.7612306"
         onChange={handleChange}
+        containerClass="col-span-12 md:col-span-1"
       />
       <FormInput
         errorMessage={errors?.lon2}
@@ -55,9 +62,13 @@ export const CoordinatesForm: FC<ICoordinatesFormProps> = (props) => {
         type="text"
         placeholder="13.2677626"
         onChange={handleChange}
+        containerClass="col-span-12 md:col-span-1"
       />
 
-      <Button type="submit" className="col-span-3 place-self-center">
+      <Button
+        type="submit"
+        className="col-span-12 md:col-span-3 md:place-self-center"
+      >
         Calculate
       </Button>
     </form>
