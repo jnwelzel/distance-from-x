@@ -11,6 +11,7 @@ const meta = {
   tags: ["autodocs"],
   argTypes: {
     children: { control: "text" },
+    disabled: { control: "boolean" },
   },
   args: { onClick: fn() },
 } satisfies Meta<typeof Button>;
@@ -22,6 +23,14 @@ export const Primary: Story = {
   args: {
     variant: "primary",
     children: "Primary",
+  },
+};
+
+export const PrimaryDisabled: Story = {
+  args: {
+    variant: "primary",
+    children: "Primary",
+    disabled: true,
   },
 };
 
