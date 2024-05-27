@@ -16,6 +16,17 @@ export const CoordinatesForm: FC<ICoordinatesFormProps> = (props) => {
     <form onSubmit={handleSubmit} className="grid md:grid-cols-2 gap-4 w-full">
       <p className="col-span-12 md:col-span-full font-bold">Point A</p>
       <FormInput
+        label="Search"
+        containerClass="col-span-12 md:col-span-2"
+        id="search-point-a"
+        name="searchPointA"
+        placeholder="Find a place or address on Google Maps"
+        type="search"
+        value={inputs.searchPointA}
+        onChange={handleChange}
+        errorMessage={errors.searchPointA}
+      />
+      <FormInput
         label="Latitute"
         errorMessage={errors?.lat1}
         value={inputs.lat1}
@@ -38,6 +49,17 @@ export const CoordinatesForm: FC<ICoordinatesFormProps> = (props) => {
         containerClass="col-span-12 md:col-span-1"
       />
       <p className="col-span-12 md:col-span-full font-bold">Point B</p>
+      <FormInput
+        label="Search"
+        containerClass="col-span-12 md:col-span-2"
+        id="search-point-b"
+        name="searchPointB"
+        placeholder="Find a place or address on Google Maps"
+        type="search"
+        value={inputs.searchPointB}
+        onChange={handleChange}
+        errorMessage={errors.searchPointB}
+      />
       <FormInput
         label="Latitude"
         errorMessage={errors?.lat2}

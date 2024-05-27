@@ -1,17 +1,26 @@
 import { useEffect, useState } from "react";
+import { useDebouncedCallback } from "use-debounce";
 import "./App.css";
 import { Button, CoordinatesForm } from "./components";
 import {
   calculateDistance,
+  fetchCoordinatesFromAddress,
   isValidLatitude,
   isValidLongitude,
 } from "./helpers";
+
+enum SEARCH_FIELD_NAMES {
+  pointA = "searchPointA",
+  pointB = "searchPointB",
+}
 
 export interface IFormState {
   lat1: string;
   lon1: string;
   lat2: string;
   lon2: string;
+  searchPointA: string;
+  searchPointB: string;
 }
 
 function App() {
@@ -20,6 +29,8 @@ function App() {
     lon1: "",
     lat2: "",
     lon2: "",
+    [SEARCH_FIELD_NAMES.pointA]: "",
+    [SEARCH_FIELD_NAMES.pointB]: "",
   });
 
   const [errors, setErrors] = useState<IFormState>({
@@ -27,6 +38,8 @@ function App() {
     lon1: "",
     lat2: "",
     lon2: "",
+    [SEARCH_FIELD_NAMES.pointA]: "",
+    [SEARCH_FIELD_NAMES.pointB]: "",
   });
 
   const [kilometers, setKilometers] = useState<number>(0);
@@ -38,18 +51,62 @@ function App() {
     setMiles(Number((kilometers * 0.621371).toFixed(2)));
   }, [kilometers]);
 
+  const fetchCoordinates = useDebouncedCallback(
+    async (searchValue: string, field: SEARCH_FIELD_NAMES) => {
+      if (searchValue === "") return;
+
+      // Clear any existing error msgs
+      setErrors((prevState) => ({ ...prevState, [field]: "" }));
+
+      // Fetch data from Google
+      const res = await fetchCoordinatesFromAddress(searchValue);
+
+      if (res.error) {
+        setErrors((prevState) => ({ ...prevState, [field]: res.error }));
+      } else {
+        const inputLat = field === SEARCH_FIELD_NAMES.pointA ? "lat1" : "lat2";
+        const inputLon = field === SEARCH_FIELD_NAMES.pointA ? "lon1" : "lon2";
+
+        setInputs((prevState) => ({
+          ...prevState,
+          [inputLat]: res.lat,
+          [inputLon]: res.lon,
+        }));
+      }
+    },
+    1000
+  );
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputs((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value,
     }));
+    if (
+      e.target.name === SEARCH_FIELD_NAMES.pointA ||
+      e.target.name === SEARCH_FIELD_NAMES.pointB
+    ) {
+      fetchCoordinates(
+        e.target.value,
+        e.target.name === SEARCH_FIELD_NAMES.pointA
+          ? SEARCH_FIELD_NAMES.pointA
+          : SEARCH_FIELD_NAMES.pointB
+      );
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
     // Validate inputs
-    setErrors({ lat1: "", lon1: "", lat2: "", lon2: "" });
+    setErrors({
+      lat1: "",
+      lon1: "",
+      lat2: "",
+      lon2: "",
+      searchPointA: "",
+      searchPointB: "",
+    });
     let hasError = false;
     if (!isValidLatitude(inputs?.lat1 ?? "")) {
       setErrors((prevState) => ({ ...prevState, lat1: "Invalid latitude" }));
