@@ -43,7 +43,7 @@ export const Button: FC<IButtonProps> = (props) => {
   return (
     <button
       {...restProps}
-      className={`py-2 px-5 ${colors[variant].background} ${colors[variant].border} ${colors[variant].text} rounded border shadow ${className}`}
+      className={`py-2 px-5 ${colors[variant].background} ${colors[variant].border} ${colors[variant].text} rounded border shadow disabled:opacity-75 ${className}`}
     />
   );
 };
