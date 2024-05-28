@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import "./App.css";
-import { Button, CoordinatesForm } from "./components";
+import { CoordinatesForm } from "./components";
 import {
   calculateDistance,
   fetchCoordinatesFromAddress,
@@ -42,10 +42,11 @@ function App() {
     [SEARCH_FIELD_NAMES.pointB]: "",
   });
 
+  const [isLoadingLocationA, setIsLoadingLocationA] = useState<boolean>(false);
+  const [isLoadingLocationB, setIsLoadingLocationB] = useState<boolean>(false);
+
   const [kilometers, setKilometers] = useState<number>(0);
   const [miles, setMiles] = useState<number>(0);
-  const [isLoadingMyLocation, setIsLoadingMyLocation] =
-    useState<boolean>(false);
 
   useEffect(() => {
     setMiles(Number((kilometers * 0.621371).toFixed(2)));
@@ -140,24 +141,37 @@ function App() {
     setKilometers(result);
   };
 
-  const geolocationSuccess = (position: GeolocationPosition) => {
-    setIsLoadingMyLocation(false);
-    setInputs((prevState) => ({
-      ...prevState,
-      lat1: position.coords.latitude.toFixed(7),
-      lon1: position.coords.longitude.toFixed(7),
-    }));
-  };
-
-  const geolocationError = () => {
-    setIsLoadingMyLocation(false);
-  };
-
-  const handleMyLocationClick = () => {
-    setIsLoadingMyLocation(true);
+  const handleUserLocationA = () => {
+    setIsLoadingLocationA(true);
     navigator.geolocation.getCurrentPosition(
-      geolocationSuccess,
-      geolocationError
+      (position: GeolocationPosition) => {
+        setIsLoadingLocationA(false);
+        setInputs((prevState) => ({
+          ...prevState,
+          lat1: position.coords.latitude.toFixed(7),
+          lon1: position.coords.longitude.toFixed(7),
+        }));
+      },
+      () => {
+        setIsLoadingLocationA(false);
+      }
+    );
+  };
+
+  const handleUserLocationB = () => {
+    setIsLoadingLocationB(true);
+    navigator.geolocation.getCurrentPosition(
+      (position: GeolocationPosition) => {
+        setIsLoadingLocationA(false);
+        setInputs((prevState) => ({
+          ...prevState,
+          lat2: position.coords.latitude.toFixed(7),
+          lon2: position.coords.longitude.toFixed(7),
+        }));
+      },
+      () => {
+        setIsLoadingLocationB(false);
+      }
     );
   };
 
@@ -170,22 +184,16 @@ function App() {
         line
       </h1>
       <div className="md:max-w-3xl md:mx-auto p-4">
-        {navigator.geolocation ? (
-          <Button
-            variant="secondary"
-            className="my-4 mx-auto"
-            onClick={handleMyLocationClick}
-            disabled={isLoadingMyLocation}
-          >
-            Use my location
-          </Button>
-        ) : null}
         <div className="grid grid-flow-row gap-4">
           <CoordinatesForm
             handleSubmit={handleSubmit}
             errors={errors}
             handleChange={handleChange}
             inputs={inputs}
+            isLoadingLocationA={isLoadingLocationA}
+            isLoadingLocationB={isLoadingLocationB}
+            handleUserLocationA={handleUserLocationA}
+            handleUserLocationB={handleUserLocationB}
           />
           <p className="text-xl">
             <b className="underline">Distance:</b>{" "}

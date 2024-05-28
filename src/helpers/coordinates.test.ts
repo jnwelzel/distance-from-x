@@ -15,6 +15,12 @@ describe("calculateDistance()", () => {
   test("Returns 0 when invalid coordinates are provided", () => {
     expect(calculateDistance(99, 99, 99, 99)).toEqual(0);
   });
+
+  test("Returns 0 when both coordinates are the same", () => {
+    expect(
+      calculateDistance(52.7579522, 13.2516223, 52.7579522, 13.2516223)
+    ).toEqual(0);
+  });
 });
 
 describe("isValidLatitude()", () => {
