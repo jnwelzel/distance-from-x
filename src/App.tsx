@@ -161,6 +161,8 @@ function App() {
     );
   };
 
+  const locale = navigator.language;
+
   return (
     <>
       <h1 className="text-white drop-shadow shadow bg-gradient-to-r from-cyan-500 to-blue-500 text-center p-6 text-2xl md:p-20 md:text-6xl">
@@ -186,7 +188,9 @@ function App() {
             inputs={inputs}
           />
           <p className="text-xl">
-            <b>Distance:</b> {kilometers}km ({miles}mi)
+            <b className="underline">Distance:</b>{" "}
+            {kilometers.toLocaleString(locale)}km (
+            {miles.toLocaleString(locale)}mi)
           </p>
         </div>
       </div>
