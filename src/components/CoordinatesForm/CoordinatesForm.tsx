@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { FormInput } from "../FormInput/FormInput";
 import { Button } from "../Button/Button";
-import { IFormState } from "../../App";
+import type { IFormState } from "./state";
 
 interface ICoordinatesFormProps {
   handleSubmit: (e: React.FormEvent) => void;
