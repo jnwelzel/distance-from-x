@@ -3,6 +3,7 @@ const API_KEY = "AIzaSyBpDsSsGM3OqVg_mAaHN_JOBkCkHR5VQvI";
 interface GeocodeResponse {
   lat?: string;
   lon?: string;
+  formattedAddress?: "";
   error?: string;
 }
 
@@ -16,8 +17,12 @@ export const fetchCoordinatesFromAddress = async (
     const data = await response.json();
 
     if (data.status === "OK") {
-      const location = data.results[0].geometry.location;
-      return { lat: location.lat, lon: location.lng };
+      const { geometry, formatted_address } = data.results[0];
+      return {
+        lat: geometry.location.lat,
+        lon: geometry.location.lng,
+        formattedAddress: formatted_address,
+      };
     } else {
       return {
         error: `Geocoding API error: ${data.status}`,

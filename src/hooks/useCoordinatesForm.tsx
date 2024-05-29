@@ -57,12 +57,13 @@ export const useCoordinatesForm = () => {
 
         setInputs((prevState) => ({
           ...prevState,
+          // [field]: res.formattedAddress, // TODO Use as autocomplete suggestion
           [inputLat]: res.lat,
           [inputLon]: res.lon,
         }));
       }
     },
-    1000
+    500
   );
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

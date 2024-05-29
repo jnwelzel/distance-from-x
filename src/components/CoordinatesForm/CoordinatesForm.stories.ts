@@ -58,8 +58,8 @@ export const WithErrors: Story = {
       lon1: "Invalid longitude",
       lat2: "Invalid latitude",
       lon2: "Invalid longitude",
-      searchPointA: "",
-      searchPointB: "",
+      searchPointA: "Invalid location",
+      searchPointB: "Invalid location",
     },
   },
 };
