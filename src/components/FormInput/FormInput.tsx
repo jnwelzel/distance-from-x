@@ -26,7 +26,6 @@ export const FormInput: FC<IInputProps> = (props) => {
       {errorMessage ? (
         <span className="text-red-600 py-1 italic text-sm">{errorMessage}</span>
       ) : null}
-      <span></span>
     </span>
   );
 };

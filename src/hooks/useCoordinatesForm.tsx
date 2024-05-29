@@ -39,10 +39,9 @@ export const useCoordinatesForm = () => {
 
   const fetchCoordinates = useDebouncedCallback(
     async (searchValue: string, field: SEARCH_FIELD_NAMES) => {
-      if (searchValue === "") return;
-
-      // Clear any existing error msgs
-      setErrors((prevState) => ({ ...prevState, [field]: "" }));
+      if (searchValue === "") {
+        return;
+      }
 
       // Fetch data from Google
       const res = await fetchCoordinatesFromAddress(searchValue);
@@ -52,6 +51,9 @@ export const useCoordinatesForm = () => {
       } else {
         const inputLat = field === SEARCH_FIELD_NAMES.pointA ? "lat1" : "lat2";
         const inputLon = field === SEARCH_FIELD_NAMES.pointA ? "lon1" : "lon2";
+
+        // Clear any existing error msgs
+        setErrors((prevState) => ({ ...prevState, [field]: "" }));
 
         setInputs((prevState) => ({
           ...prevState,
@@ -72,12 +74,12 @@ export const useCoordinatesForm = () => {
       e.target.name === SEARCH_FIELD_NAMES.pointA ||
       e.target.name === SEARCH_FIELD_NAMES.pointB
     ) {
-      fetchCoordinates(
-        e.target.value,
+      const field =
         e.target.name === SEARCH_FIELD_NAMES.pointA
           ? SEARCH_FIELD_NAMES.pointA
-          : SEARCH_FIELD_NAMES.pointB
-      );
+          : SEARCH_FIELD_NAMES.pointB;
+      setErrors((prevState) => ({ ...prevState, [field]: "" }));
+      fetchCoordinates(e.target.value, field);
     }
   };
 

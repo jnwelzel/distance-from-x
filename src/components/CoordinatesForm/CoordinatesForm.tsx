@@ -30,7 +30,7 @@ export const CoordinatesForm: FC<ICoordinatesFormProps> = (props) => {
       <p className="col-span-12 md:col-span-full font-bold">Point A</p>
       <FormInput
         label="Search"
-        containerClass="col-span-12 md:col-span-1"
+        containerClass="col-span-12 md:col-span-2"
         id="search-point-a"
         name="searchPointA"
         placeholder="Find a place"
@@ -41,7 +41,7 @@ export const CoordinatesForm: FC<ICoordinatesFormProps> = (props) => {
       />
       <Button
         variant="secondary"
-        className="col-span-12 md:col-span-1 self-end"
+        className="col-span-12 md:col-span-2"
         onClick={handleUserLocationA}
         disabled={isLoadingLocationA}
       >
@@ -72,7 +72,7 @@ export const CoordinatesForm: FC<ICoordinatesFormProps> = (props) => {
       <p className="col-span-12 md:col-span-full font-bold">Point B</p>
       <FormInput
         label="Search"
-        containerClass="col-span-12 md:col-span-1"
+        containerClass="col-span-12 md:col-span-2"
         id="search-point-b"
         name="searchPointB"
         placeholder="Find a place"
@@ -83,7 +83,7 @@ export const CoordinatesForm: FC<ICoordinatesFormProps> = (props) => {
       />
       <Button
         variant="secondary"
-        className="col-span-12 md:col-span-1 self-end"
+        className="col-span-12 md:col-span-2"
         onClick={handleUserLocationB}
         disabled={isLoadingLocationB}
       >
