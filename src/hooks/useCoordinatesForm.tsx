@@ -51,7 +51,7 @@ export const useCoordinatesForm = () => {
 
         setInputs((prevState) => ({
           ...prevState,
-          // [field]: res.formattedAddress, // TODO Use as autocomplete suggestion
+          [field]: { ...prevState[field], suggestions: [res.formattedAddress] },
           [inputLat]: { ...prevState[inputLat], value: res.lat },
           [inputLon]: { ...prevState[inputLon], value: res.lon },
         }));

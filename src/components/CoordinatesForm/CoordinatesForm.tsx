@@ -36,6 +36,7 @@ export const CoordinatesForm: FC<ICoordinatesFormProps> = (props) => {
         value={inputs.searchPointA.value}
         onChange={handleChange}
         errorMessage={inputs.searchPointA.error}
+        suggestions={inputs.searchPointA.suggestions}
       />
       <Button
         variant="secondary"
