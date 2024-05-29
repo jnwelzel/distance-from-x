@@ -34,3 +34,24 @@ export const WithErrorMessage: Story = {
     id: "with-error",
   },
 };
+
+export const WithSuggestionsAndError: Story = {
+  args: {
+    label: "Address",
+    id: "suggestions-error",
+    errorMessage: "Invalid address",
+    suggestions: ["One", "Two", "Three"],
+  },
+};
+
+export const WithLongSuggestions: Story = {
+  args: {
+    label: "Address",
+    id: "long-suggestions",
+    suggestions: [
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+    ],
+  },
+};
