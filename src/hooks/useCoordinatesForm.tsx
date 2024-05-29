@@ -6,30 +6,16 @@ import {
   isValidLatitude,
   isValidLongitude,
 } from "../helpers";
-import type { IFormState } from "../components";
-
-enum SEARCH_FIELD_NAMES {
-  pointA = "searchPointA",
-  pointB = "searchPointB",
-}
+import { FORM_INPUT_NAMES, type IFormState } from "../components";
 
 export const useCoordinatesForm = () => {
   const [inputs, setInputs] = useState<IFormState>({
-    lat1: "",
-    lon1: "",
-    lat2: "",
-    lon2: "",
-    [SEARCH_FIELD_NAMES.pointA]: "",
-    [SEARCH_FIELD_NAMES.pointB]: "",
-  });
-
-  const [errors, setErrors] = useState<IFormState>({
-    lat1: "",
-    lon1: "",
-    lat2: "",
-    lon2: "",
-    [SEARCH_FIELD_NAMES.pointA]: "",
-    [SEARCH_FIELD_NAMES.pointB]: "",
+    [FORM_INPUT_NAMES.lat1]: { value: "", error: "", suggestions: [] },
+    [FORM_INPUT_NAMES.lon1]: { value: "", error: "", suggestions: [] },
+    [FORM_INPUT_NAMES.lat2]: { value: "", error: "", suggestions: [] },
+    [FORM_INPUT_NAMES.lon2]: { value: "", error: "", suggestions: [] },
+    [FORM_INPUT_NAMES.searchPointA]: { value: "", error: "", suggestions: [] },
+    [FORM_INPUT_NAMES.searchPointB]: { value: "", error: "", suggestions: [] },
   });
 
   const [isLoadingLocationA, setIsLoadingLocationA] = useState<boolean>(false);
@@ -38,7 +24,7 @@ export const useCoordinatesForm = () => {
   const [kilometers, setKilometers] = useState<number>(0);
 
   const fetchCoordinates = useDebouncedCallback(
-    async (searchValue: string, field: SEARCH_FIELD_NAMES) => {
+    async (searchValue: string, field: FORM_INPUT_NAMES) => {
       if (searchValue === "") {
         return;
       }
@@ -47,39 +33,56 @@ export const useCoordinatesForm = () => {
       const res = await fetchCoordinatesFromAddress(searchValue);
 
       if (res.error) {
-        setErrors((prevState) => ({ ...prevState, [field]: res.error }));
+        setInputs((prevState) => ({
+          ...prevState,
+          [field]: { ...prevState[field], error: res.error },
+        }));
       } else {
-        const inputLat = field === SEARCH_FIELD_NAMES.pointA ? "lat1" : "lat2";
-        const inputLon = field === SEARCH_FIELD_NAMES.pointA ? "lon1" : "lon2";
+        const inputLat =
+          field === FORM_INPUT_NAMES.searchPointA ? "lat1" : "lat2";
+        const inputLon =
+          field === FORM_INPUT_NAMES.searchPointA ? "lon1" : "lon2";
 
         // Clear any existing error msgs
-        setErrors((prevState) => ({ ...prevState, [field]: "" }));
+        setInputs((prevState) => ({
+          ...prevState,
+          [field]: { ...prevState[field], error: "" },
+        }));
 
         setInputs((prevState) => ({
           ...prevState,
           // [field]: res.formattedAddress, // TODO Use as autocomplete suggestion
-          [inputLat]: res.lat,
-          [inputLon]: res.lon,
+          [inputLat]: { ...prevState[inputLat], value: res.lat },
+          [inputLon]: { ...prevState[inputLon], value: res.lon },
         }));
       }
     },
     500
   );
 
+  const isSearchInput = (fieldName: string): boolean =>
+    fieldName === FORM_INPUT_NAMES.searchPointA ||
+    fieldName === FORM_INPUT_NAMES.searchPointB;
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputs((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.value,
-    }));
-    if (
-      e.target.name === SEARCH_FIELD_NAMES.pointA ||
-      e.target.name === SEARCH_FIELD_NAMES.pointB
-    ) {
+    Object.values(FORM_INPUT_NAMES).forEach((input) => {
+      if (input === e.target.name) {
+        setInputs((prevState) => ({
+          ...prevState,
+          [input]: { ...prevState[input], value: e.target.value },
+        }));
+      }
+    });
+
+    if (isSearchInput(e.target.name)) {
       const field =
-        e.target.name === SEARCH_FIELD_NAMES.pointA
-          ? SEARCH_FIELD_NAMES.pointA
-          : SEARCH_FIELD_NAMES.pointB;
-      setErrors((prevState) => ({ ...prevState, [field]: "" }));
+        e.target.name === FORM_INPUT_NAMES.searchPointA
+          ? FORM_INPUT_NAMES.searchPointA
+          : FORM_INPUT_NAMES.searchPointB;
+      setInputs((prevState) => ({
+        ...prevState,
+        [field]: { ...prevState[field], error: "" },
+      }));
       fetchCoordinates(e.target.value, field);
     }
   };
@@ -88,29 +91,41 @@ export const useCoordinatesForm = () => {
     e.preventDefault();
 
     // Validate inputs
-    setErrors({
-      lat1: "",
-      lon1: "",
-      lat2: "",
-      lon2: "",
-      searchPointA: "",
-      searchPointB: "",
-    });
+    // Clear all errors
+    setInputs((prevState) => ({
+      ...prevState,
+      lat1: { ...prevState.lat1, error: "" },
+      lon1: { ...prevState.lon1, error: "" },
+      lat2: { ...prevState.lat2, error: "" },
+      lon2: { ...prevState.lon2, error: "" },
+    }));
     let hasError = false;
-    if (!isValidLatitude(inputs?.lat1 ?? "")) {
-      setErrors((prevState) => ({ ...prevState, lat1: "Invalid latitude" }));
+    if (!isValidLatitude(inputs.lat1.value ?? "")) {
+      setInputs((prevState) => ({
+        ...prevState,
+        lat1: { ...prevState.lat1, error: "Invalid latitude" },
+      }));
       hasError = true;
     }
-    if (!isValidLongitude(inputs?.lon1 ?? "")) {
-      setErrors((prevState) => ({ ...prevState, lon1: "Invalid longitude" }));
+    if (!isValidLongitude(inputs.lon1.value ?? "")) {
+      setInputs((prevState) => ({
+        ...prevState,
+        lon1: { ...prevState.lon1, error: "Invalid longitude" },
+      }));
       hasError = true;
     }
-    if (!isValidLatitude(inputs?.lat2 ?? "")) {
-      setErrors((prevState) => ({ ...prevState, lat2: "Invalid latitude" }));
+    if (!isValidLatitude(inputs.lat2.value ?? "")) {
+      setInputs((prevState) => ({
+        ...prevState,
+        lat2: { ...prevState.lat2, error: "Invalid latitude" },
+      }));
       hasError = true;
     }
-    if (!isValidLongitude(inputs?.lon2 ?? "")) {
-      setErrors((prevState) => ({ ...prevState, lon2: "Invalid longitude" }));
+    if (!isValidLongitude(inputs.lon2.value ?? "")) {
+      setInputs((prevState) => ({
+        ...prevState,
+        lon2: { ...prevState.lon2, error: "Invalid longitude" },
+      }));
       hasError = true;
     }
 
@@ -121,10 +136,10 @@ export const useCoordinatesForm = () => {
 
     // Calculate distance
     const result = calculateDistance(
-      parseFloat(inputs.lat1),
-      parseFloat(inputs.lon1),
-      parseFloat(inputs.lat2),
-      parseFloat(inputs.lon2)
+      parseFloat(inputs.lat1.value),
+      parseFloat(inputs.lon1.value),
+      parseFloat(inputs.lat2.value),
+      parseFloat(inputs.lon2.value)
     );
     setKilometers(result);
   };
@@ -137,8 +152,14 @@ export const useCoordinatesForm = () => {
         setIsLoadingLocationA(false);
         setInputs((prevState) => ({
           ...prevState,
-          lat1: position.coords.latitude.toFixed(7),
-          lon1: position.coords.longitude.toFixed(7),
+          lat1: {
+            ...prevState.lat1,
+            value: position.coords.latitude.toFixed(7),
+          },
+          lon1: {
+            ...prevState.lon1,
+            value: position.coords.longitude.toFixed(7),
+          },
         }));
       },
       () => {
@@ -155,8 +176,14 @@ export const useCoordinatesForm = () => {
         setIsLoadingLocationB(false);
         setInputs((prevState) => ({
           ...prevState,
-          lat2: position.coords.latitude.toFixed(7),
-          lon2: position.coords.longitude.toFixed(7),
+          lat2: {
+            ...prevState.lat2,
+            value: position.coords.latitude.toFixed(7),
+          },
+          lon2: {
+            ...prevState.lon2,
+            value: position.coords.longitude.toFixed(7),
+          },
         }));
       },
       () => {
@@ -167,7 +194,6 @@ export const useCoordinatesForm = () => {
 
   return {
     handleSubmit,
-    errors,
     handleChange,
     inputs,
     isLoadingLocationA,

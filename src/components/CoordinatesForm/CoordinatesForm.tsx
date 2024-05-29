@@ -5,7 +5,6 @@ import type { IFormState } from "./state";
 
 interface ICoordinatesFormProps {
   handleSubmit: (e: React.FormEvent) => void;
-  errors: IFormState;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   inputs: IFormState;
   isLoadingLocationA: boolean;
@@ -18,7 +17,6 @@ export const CoordinatesForm: FC<ICoordinatesFormProps> = (props) => {
   const {
     handleSubmit,
     handleChange,
-    errors,
     inputs,
     isLoadingLocationA,
     isLoadingLocationB,
@@ -35,9 +33,9 @@ export const CoordinatesForm: FC<ICoordinatesFormProps> = (props) => {
         name="searchPointA"
         placeholder="Find a place"
         type="search"
-        value={inputs.searchPointA}
+        value={inputs.searchPointA.value}
         onChange={handleChange}
-        errorMessage={errors.searchPointA}
+        errorMessage={inputs.searchPointA.error}
       />
       <Button
         variant="secondary"
@@ -49,8 +47,8 @@ export const CoordinatesForm: FC<ICoordinatesFormProps> = (props) => {
       </Button>
       <FormInput
         label="Latitute"
-        errorMessage={errors?.lat1}
-        value={inputs.lat1}
+        errorMessage={inputs.lat1.error}
+        value={inputs.lat1.value}
         id="lat1"
         name="lat1"
         type="text"
@@ -59,9 +57,9 @@ export const CoordinatesForm: FC<ICoordinatesFormProps> = (props) => {
         containerClass="col-span-12 md:col-span-1"
       />
       <FormInput
-        errorMessage={errors?.lon1}
+        errorMessage={inputs.lon1.error}
         label="Longitude"
-        value={inputs.lon1}
+        value={inputs.lon1.value}
         id="lon1"
         name="lon1"
         type="text"
@@ -77,9 +75,9 @@ export const CoordinatesForm: FC<ICoordinatesFormProps> = (props) => {
         name="searchPointB"
         placeholder="Find a place"
         type="search"
-        value={inputs.searchPointB}
+        value={inputs.searchPointB.value}
         onChange={handleChange}
-        errorMessage={errors.searchPointB}
+        errorMessage={inputs.searchPointB.error}
       />
       <Button
         variant="secondary"
@@ -91,8 +89,8 @@ export const CoordinatesForm: FC<ICoordinatesFormProps> = (props) => {
       </Button>
       <FormInput
         label="Latitude"
-        errorMessage={errors?.lat2}
-        value={inputs.lat2}
+        errorMessage={inputs.lat2.error}
+        value={inputs.lat2.value}
         id="lat2"
         name="lat2"
         type="text"
@@ -101,9 +99,9 @@ export const CoordinatesForm: FC<ICoordinatesFormProps> = (props) => {
         containerClass="col-span-12 md:col-span-1"
       />
       <FormInput
-        errorMessage={errors?.lon2}
+        errorMessage={inputs.lon2.error}
         label="Longitude"
-        value={inputs.lon2}
+        value={inputs.lon2.value}
         id="lon2"
         name="lon2"
         type="text"
