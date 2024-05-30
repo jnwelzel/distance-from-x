@@ -268,7 +268,6 @@ export const useCoordinatesForm = () => {
   };
 
   const handleCancelClick = (button: BUTTON_NAMES) => {
-    console.log(button);
     const searchField =
       button === BUTTON_NAMES.cancelA
         ? FORM_INPUT_NAMES.searchPointA
