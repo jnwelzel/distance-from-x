@@ -28,6 +28,7 @@ export const CoordinatesForm: FC<ICoordinatesFormProps> = (props) => {
   return (
     <form onSubmit={handleSubmit} className="grid md:grid-cols-2 gap-4 w-full">
       <p className="col-span-12 md:col-span-full font-bold">Point A</p>
+
       <FormInput
         label="Search"
         containerClass="col-span-12 md:col-span-2"
@@ -41,6 +42,7 @@ export const CoordinatesForm: FC<ICoordinatesFormProps> = (props) => {
         suggestions={inputs.searchPointA.suggestions}
         handleSuggestionClick={handleSuggestionClick}
       />
+
       <Button
         variant="secondary"
         className="col-span-12 md:col-span-2"
@@ -49,6 +51,7 @@ export const CoordinatesForm: FC<ICoordinatesFormProps> = (props) => {
       >
         Use my location
       </Button>
+
       <FormInput
         label="Latitute"
         errorMessage={inputs.lat1.error}
@@ -56,10 +59,11 @@ export const CoordinatesForm: FC<ICoordinatesFormProps> = (props) => {
         id="lat1"
         name="lat1"
         type="text"
-        placeholder="52.7579522"
+        placeholder="-23.5557714"
         onChange={handleChange}
         containerClass="col-span-12 md:col-span-1"
       />
+
       <FormInput
         errorMessage={inputs.lon1.error}
         label="Longitude"
@@ -67,11 +71,13 @@ export const CoordinatesForm: FC<ICoordinatesFormProps> = (props) => {
         id="lon1"
         name="lon1"
         type="text"
-        placeholder="13.2516223"
+        placeholder="-46.6395571"
         onChange={handleChange}
         containerClass="col-span-12 md:col-span-1"
       />
+
       <p className="col-span-12 md:col-span-full font-bold">Point B</p>
+
       <FormInput
         label="Search"
         containerClass="col-span-12 md:col-span-2"
@@ -85,6 +91,7 @@ export const CoordinatesForm: FC<ICoordinatesFormProps> = (props) => {
         suggestions={inputs.searchPointB.suggestions}
         handleSuggestionClick={handleSuggestionClick}
       />
+
       <Button
         variant="secondary"
         className="col-span-12 md:col-span-2"
@@ -93,6 +100,7 @@ export const CoordinatesForm: FC<ICoordinatesFormProps> = (props) => {
       >
         Use my location
       </Button>
+
       <FormInput
         label="Latitude"
         errorMessage={inputs.lat2.error}
@@ -100,10 +108,11 @@ export const CoordinatesForm: FC<ICoordinatesFormProps> = (props) => {
         id="lat2"
         name="lat2"
         type="text"
-        placeholder="52.7612306"
+        placeholder="-24.7227436"
         onChange={handleChange}
         containerClass="col-span-12 md:col-span-1"
       />
+
       <FormInput
         errorMessage={inputs.lon2.error}
         label="Longitude"
@@ -111,7 +120,7 @@ export const CoordinatesForm: FC<ICoordinatesFormProps> = (props) => {
         id="lon2"
         name="lon2"
         type="text"
-        placeholder="13.2677626"
+        placeholder="-53.7408209"
         onChange={handleChange}
         containerClass="col-span-12 md:col-span-1"
       />
