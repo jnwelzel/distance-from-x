@@ -11,6 +11,7 @@ interface ICoordinatesFormProps {
   buttons: IButtons;
   handleUserLocation: MyLocationClickCallback;
   handleSuggestionClick: SuggestionClickCallback;
+  handleCancelClick: (button: BUTTON_NAMES) => void;
 }
 
 export const CoordinatesForm: FC<ICoordinatesFormProps> = (props) => {
@@ -21,6 +22,7 @@ export const CoordinatesForm: FC<ICoordinatesFormProps> = (props) => {
     buttons,
     handleUserLocation,
     handleSuggestionClick,
+    handleCancelClick,
   } = props;
   return (
     <form onSubmit={handleSubmit} className="grid md:grid-cols-2 gap-4 w-full">
@@ -64,7 +66,14 @@ export const CoordinatesForm: FC<ICoordinatesFormProps> = (props) => {
         containerClass="col-span-12 md:col-span-1"
       />
 
-      <Button variant="error" className="col-span-12 md:col-span-1">
+      <Button
+        variant="error"
+        className="col-span-12 md:col-span-1"
+        onClick={() => {
+          handleCancelClick(BUTTON_NAMES.cancelA);
+        }}
+        type="button"
+      >
         Cancel
       </Button>
 
@@ -117,7 +126,14 @@ export const CoordinatesForm: FC<ICoordinatesFormProps> = (props) => {
         containerClass="col-span-12 md:col-span-1"
       />
 
-      <Button variant="error" className="col-span-12 md:col-span-1">
+      <Button
+        variant="error"
+        className="col-span-12 md:col-span-1"
+        onClick={() => {
+          handleCancelClick(BUTTON_NAMES.cancelB);
+        }}
+        type="button"
+      >
         Cancel
       </Button>
 

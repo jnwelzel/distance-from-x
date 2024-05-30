@@ -27,6 +27,8 @@ export const useCoordinatesForm = () => {
   const [buttons, setButtons] = useState<IButtons>({
     myLocationA: { isLoading: false },
     myLocationB: { isLoading: false },
+    cancelA: { isLoading: false },
+    cancelB: { isLoading: false },
   });
 
   const [kilometers, setKilometers] = useState<number>(0);
@@ -265,6 +267,33 @@ export const useCoordinatesForm = () => {
     }
   };
 
+  const handleCancelClick = (button: BUTTON_NAMES) => {
+    console.log(button);
+    const searchField =
+      button === BUTTON_NAMES.cancelA
+        ? FORM_INPUT_NAMES.searchPointA
+        : FORM_INPUT_NAMES.searchPointB;
+    const latField =
+      button === BUTTON_NAMES.cancelA
+        ? FORM_INPUT_NAMES.lat1
+        : FORM_INPUT_NAMES.lat2;
+    const lonField =
+      button === BUTTON_NAMES.cancelA
+        ? FORM_INPUT_NAMES.lon1
+        : FORM_INPUT_NAMES.lon2;
+    setInputs((prevState) => ({
+      ...prevState,
+      [searchField]: {
+        ...prevState[searchField],
+        value: "",
+        error: "",
+        suggestions: [],
+      },
+      [latField]: { ...prevState[latField], value: "", error: "" },
+      [lonField]: { ...prevState[lonField], value: "", error: "" },
+    }));
+  };
+
   return {
     handleSubmit,
     handleChange,
@@ -273,5 +302,6 @@ export const useCoordinatesForm = () => {
     handleUserLocation,
     kilometers,
     handleSuggestionClick,
+    handleCancelClick,
   };
 };

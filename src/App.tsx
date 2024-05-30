@@ -12,6 +12,7 @@ function App() {
     handleUserLocation,
     kilometers,
     handleSuggestionClick,
+    handleCancelClick,
   } = useCoordinatesForm();
   const [miles, setMiles] = useState<number>(0);
 
@@ -36,6 +37,7 @@ function App() {
             buttons={buttons}
             handleUserLocation={handleUserLocation}
             handleSuggestionClick={handleSuggestionClick}
+            handleCancelClick={handleCancelClick}
           />
           <p className="text-xl">
             <b className="underline">Distance:</b>{" "}

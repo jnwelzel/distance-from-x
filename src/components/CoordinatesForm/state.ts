@@ -25,6 +25,8 @@ export interface IFormState {
 export enum BUTTON_NAMES {
   myLocationA = "myLocationA",
   myLocationB = "myLocationB",
+  cancelA = "cancelA",
+  cancelB = "cancelB",
 }
 
 interface IButton {
@@ -34,4 +36,6 @@ interface IButton {
 export interface IButtons {
   [BUTTON_NAMES.myLocationA]: IButton;
   [BUTTON_NAMES.myLocationB]: IButton;
+  [BUTTON_NAMES.cancelA]: IButton;
+  [BUTTON_NAMES.cancelB]: IButton;
 }
