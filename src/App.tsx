@@ -9,8 +9,7 @@ function App() {
     handleChange,
     inputs,
     buttons,
-    handleUserLocationA,
-    handleUserLocationB,
+    handleUserLocation,
     kilometers,
     handleSuggestionClick,
   } = useCoordinatesForm();
@@ -35,8 +34,7 @@ function App() {
             handleChange={handleChange}
             inputs={inputs}
             buttons={buttons}
-            handleUserLocationA={handleUserLocationA}
-            handleUserLocationB={handleUserLocationB}
+            handleUserLocation={handleUserLocation}
             handleSuggestionClick={handleSuggestionClick}
           />
           <p className="text-xl">

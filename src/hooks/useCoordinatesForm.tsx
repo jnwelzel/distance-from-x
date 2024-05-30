@@ -6,7 +6,12 @@ import {
   isValidLatitude,
   isValidLongitude,
 } from "../helpers";
-import { FORM_INPUT_NAMES, IButtons, type IFormState } from "../components";
+import {
+  BUTTON_NAMES,
+  FORM_INPUT_NAMES,
+  IButtons,
+  type IFormState,
+} from "../components";
 
 export const useCoordinatesForm = () => {
   const [inputs, setInputs] = useState<IFormState>({
@@ -152,59 +157,37 @@ export const useCoordinatesForm = () => {
     setKilometers(result);
   };
 
-  // TODO Extract this into more generic function
-  const handleUserLocationA = () => {
+  const handleUserLocation = (myLocationButton: BUTTON_NAMES) => {
     setButtons((prevState) => ({
       ...prevState,
-      myLocationA: { ...prevState.myLocationA, isLoading: true },
+      [myLocationButton]: { ...prevState[myLocationButton], isLoading: true },
     }));
     navigator.geolocation.getCurrentPosition(
       (position: GeolocationPosition) => {
-        setButtons((prevState) => ({
-          ...prevState,
-          myLocationA: { ...prevState.myLocationA, isLoading: false },
-        }));
-        setInputs((prevState) => ({
-          ...prevState,
-          lat1: {
-            ...prevState.lat1,
-            value: position.coords.latitude.toFixed(7),
-          },
-          lon1: {
-            ...prevState.lon1,
-            value: position.coords.longitude.toFixed(7),
-          },
-        }));
-      },
-      () => {
-        setButtons((prevState) => ({
-          ...prevState,
-          myLocationA: { ...prevState.myLocationA, isLoading: false },
-        }));
-      }
-    );
-  };
+        const latField =
+          myLocationButton === BUTTON_NAMES.myLocationA
+            ? FORM_INPUT_NAMES.lat1
+            : FORM_INPUT_NAMES.lat2;
+        const lonField =
+          myLocationButton === BUTTON_NAMES.myLocationA
+            ? FORM_INPUT_NAMES.lon1
+            : FORM_INPUT_NAMES.lon2;
 
-  // TODO Extract this into more generic function
-  const handleUserLocationB = () => {
-    setButtons((prevState) => ({
-      ...prevState,
-      myLocationB: { ...prevState.myLocationB, isLoading: true },
-    }));
-    navigator.geolocation.getCurrentPosition(
-      (position: GeolocationPosition) => {
         setButtons((prevState) => ({
           ...prevState,
-          myLocationB: { ...prevState.myLocationB, isLoading: false },
+          [myLocationButton]: {
+            ...prevState[myLocationButton],
+            isLoading: false,
+          },
         }));
         setInputs((prevState) => ({
           ...prevState,
-          lat2: {
-            ...prevState.lat2,
+          [latField]: {
+            ...prevState[latField],
             value: position.coords.latitude.toFixed(7),
           },
-          lon2: {
-            ...prevState.lon2,
+          [lonField]: {
+            ...prevState[lonField],
             value: position.coords.longitude.toFixed(7),
           },
         }));
@@ -212,7 +195,10 @@ export const useCoordinatesForm = () => {
       () => {
         setButtons((prevState) => ({
           ...prevState,
-          myLocationB: { ...prevState.myLocationB, isLoading: false },
+          [myLocationButton]: {
+            ...prevState[myLocationButton],
+            isLoading: false,
+          },
         }));
       }
     );
@@ -262,8 +248,7 @@ export const useCoordinatesForm = () => {
     handleChange,
     inputs,
     buttons,
-    handleUserLocationA,
-    handleUserLocationB,
+    handleUserLocation,
     kilometers,
     handleSuggestionClick,
   };

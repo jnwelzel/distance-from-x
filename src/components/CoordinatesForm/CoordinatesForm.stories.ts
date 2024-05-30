@@ -12,8 +12,7 @@ const meta = {
   args: {
     handleSubmit: fn(),
     handleChange: fn(),
-    handleUserLocationA: fn(),
-    handleUserLocationB: fn(),
+    handleUserLocation: fn(),
     handleSuggestionClick: fn(),
     buttons: {
       myLocationA: { isLoading: false },

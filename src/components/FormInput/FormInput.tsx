@@ -1,5 +1,6 @@
 import { FC } from "react";
 import { Suggestions } from "./Suggestions/Suggestions";
+import { SuggestionClickCallback } from "../..";
 
 interface IInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   errorMessage?: string;

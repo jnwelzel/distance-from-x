@@ -1,4 +1,5 @@
 import { FC } from "react";
+import { SuggestionClickCallback } from "../../..";
 
 interface ISuggestionsProps {
   items: string[];

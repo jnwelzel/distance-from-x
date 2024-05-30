@@ -22,10 +22,16 @@ export interface IFormState {
   [FORM_INPUT_NAMES.searchPointB]: IFormInput;
 }
 
+export enum BUTTON_NAMES {
+  myLocationA = "myLocationA",
+  myLocationB = "myLocationB",
+}
+
 interface IButton {
   isLoading: boolean;
 }
+
 export interface IButtons {
-  myLocationA: IButton;
-  myLocationB: IButton;
+  [BUTTON_NAMES.myLocationA]: IButton;
+  [BUTTON_NAMES.myLocationB]: IButton;
 }
