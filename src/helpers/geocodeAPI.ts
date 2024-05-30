@@ -7,11 +7,7 @@ interface GeocodeResponse {
   error?: string;
 }
 
-export const fetchCoordinatesFromAddress = async (
-  searchValue: string
-): Promise<GeocodeResponse> => {
-  const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(searchValue)}&key=${API_KEY}`;
-
+const getGeocodeData = async (url: string): Promise<GeocodeResponse> => {
   try {
     const response = await fetch(url);
     const data = await response.json();
@@ -31,4 +27,16 @@ export const fetchCoordinatesFromAddress = async (
   } catch (e) {
     return { error: `Error fetching data from Geocoding API: ${e}` };
   }
+};
+
+export const fetchCoordinatesFromAddress = async (searchValue: string) => {
+  const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(searchValue)}&key=${API_KEY}`;
+
+  return getGeocodeData(url);
+};
+
+export const fetchAddressFromCoordinates = async (lat: number, lon: number) => {
+  const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(`${lat},${lon}`)}&key=${API_KEY}`;
+
+  return getGeocodeData(url);
 };

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import {
   calculateDistance,
+  fetchAddressFromCoordinates,
   fetchCoordinatesFromAddress,
   isValidLatitude,
   isValidLongitude,
@@ -163,7 +164,8 @@ export const useCoordinatesForm = () => {
       [myLocationButton]: { ...prevState[myLocationButton], isLoading: true },
     }));
     navigator.geolocation.getCurrentPosition(
-      (position: GeolocationPosition) => {
+      async (position: GeolocationPosition) => {
+        const { latitude, longitude } = position.coords;
         const latField =
           myLocationButton === BUTTON_NAMES.myLocationA
             ? FORM_INPUT_NAMES.lat1
@@ -184,13 +186,33 @@ export const useCoordinatesForm = () => {
           ...prevState,
           [latField]: {
             ...prevState[latField],
-            value: position.coords.latitude.toFixed(7),
+            value: latitude.toFixed(7),
           },
           [lonField]: {
             ...prevState[lonField],
-            value: position.coords.longitude.toFixed(7),
+            value: longitude.toFixed(7),
           },
         }));
+
+        // Fetch Geocode data for browser coordinates
+        const geocodeData = await fetchAddressFromCoordinates(
+          latitude,
+          longitude
+        );
+        // Show formatted address in search input
+        const searchField =
+          myLocationButton === BUTTON_NAMES.myLocationA
+            ? FORM_INPUT_NAMES.searchPointA
+            : FORM_INPUT_NAMES.searchPointB;
+        if (!geocodeData.error) {
+          setInputs((prevState) => ({
+            ...prevState,
+            [searchField]: {
+              ...prevState[searchField],
+              value: geocodeData.formattedAddress,
+            },
+          }));
+        }
       },
       () => {
         setButtons((prevState) => ({
