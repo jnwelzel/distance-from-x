@@ -11,6 +11,7 @@ interface ICoordinatesFormProps {
   isLoadingLocationB: boolean;
   handleUserLocationA: () => void;
   handleUserLocationB: () => void;
+  handleSuggestionClick: SuggestionClickCallback;
 }
 
 export const CoordinatesForm: FC<ICoordinatesFormProps> = (props) => {
@@ -22,6 +23,7 @@ export const CoordinatesForm: FC<ICoordinatesFormProps> = (props) => {
     isLoadingLocationB,
     handleUserLocationA,
     handleUserLocationB,
+    handleSuggestionClick,
   } = props;
   return (
     <form onSubmit={handleSubmit} className="grid md:grid-cols-2 gap-4 w-full">
@@ -37,6 +39,7 @@ export const CoordinatesForm: FC<ICoordinatesFormProps> = (props) => {
         onChange={handleChange}
         errorMessage={inputs.searchPointA.error}
         suggestions={inputs.searchPointA.suggestions}
+        handleSuggestionClick={handleSuggestionClick}
       />
       <Button
         variant="secondary"
@@ -79,6 +82,8 @@ export const CoordinatesForm: FC<ICoordinatesFormProps> = (props) => {
         value={inputs.searchPointB.value}
         onChange={handleChange}
         errorMessage={inputs.searchPointB.error}
+        suggestions={inputs.searchPointB.suggestions}
+        handleSuggestionClick={handleSuggestionClick}
       />
       <Button
         variant="secondary"

@@ -16,6 +16,7 @@ const meta = {
     isLoadingLocationB: false,
     handleUserLocationA: fn(),
     handleUserLocationB: fn(),
+    handleSuggestionClick: fn(),
   },
 } satisfies Meta<typeof CoordinatesForm>;
 

@@ -6,7 +6,6 @@ import { useCoordinatesForm } from "./hooks";
 function App() {
   const {
     handleSubmit,
-    errors,
     handleChange,
     inputs,
     isLoadingLocationA,
@@ -14,6 +13,7 @@ function App() {
     handleUserLocationA,
     handleUserLocationB,
     kilometers,
+    handleSuggestionClick,
   } = useCoordinatesForm();
   const [miles, setMiles] = useState<number>(0);
 
@@ -33,13 +33,13 @@ function App() {
         <div className="grid grid-flow-row gap-4">
           <CoordinatesForm
             handleSubmit={handleSubmit}
-            errors={errors}
             handleChange={handleChange}
             inputs={inputs}
             isLoadingLocationA={isLoadingLocationA}
             isLoadingLocationB={isLoadingLocationB}
             handleUserLocationA={handleUserLocationA}
             handleUserLocationB={handleUserLocationB}
+            handleSuggestionClick={handleSuggestionClick}
           />
           <p className="text-xl">
             <b className="underline">Distance:</b>{" "}

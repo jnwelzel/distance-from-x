@@ -6,12 +6,21 @@ interface IInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   containerClass?: string;
   suggestions?: string[];
-  handleSuggestionClick?: (item: string) => void;
+  handleSuggestionClick?: SuggestionClickCallback;
+  name: string;
 }
 
 export const FormInput: FC<IInputProps> = (props) => {
-  const { errorMessage, label, id, containerClass, suggestions, ...restProps } =
-    props;
+  const {
+    errorMessage,
+    label,
+    id,
+    containerClass,
+    suggestions = [],
+    handleSuggestionClick,
+    name,
+    ...restProps
+  } = props;
 
   return (
     <span className={`${containerClass} flex flex-col`}>
@@ -26,9 +35,16 @@ export const FormInput: FC<IInputProps> = (props) => {
           className={`text-slate-800 shadow border-solid border rounded p-2 relative w-full ${
             errorMessage ? "border-red-600" : ""
           }`}
+          name={name}
           id={id}
         />
-        {suggestions ? <Suggestions items={suggestions} /> : null}
+        {suggestions?.length > 0 ? (
+          <Suggestions
+            items={suggestions}
+            handleOnClick={handleSuggestionClick}
+            inputName={name}
+          />
+        ) : null}
       </div>
       {errorMessage ? (
         <span className="text-red-600 py-1 italic text-sm">{errorMessage}</span>

@@ -25,24 +25,15 @@ export const useCoordinatesForm = () => {
 
   const fetchCoordinates = useDebouncedCallback(
     async (searchValue: string, field: FORM_INPUT_NAMES) => {
-      if (searchValue === "") {
-        return;
-      }
-
       // Fetch data from Google
       const res = await fetchCoordinatesFromAddress(searchValue);
 
       if (res.error) {
         setInputs((prevState) => ({
           ...prevState,
-          [field]: { ...prevState[field], error: res.error },
+          [field]: { ...prevState[field], error: res.error, suggestions: [] },
         }));
       } else {
-        const inputLat =
-          field === FORM_INPUT_NAMES.searchPointA ? "lat1" : "lat2";
-        const inputLon =
-          field === FORM_INPUT_NAMES.searchPointA ? "lon1" : "lon2";
-
         // Clear any existing error msgs
         setInputs((prevState) => ({
           ...prevState,
@@ -51,9 +42,10 @@ export const useCoordinatesForm = () => {
 
         setInputs((prevState) => ({
           ...prevState,
-          [field]: { ...prevState[field], suggestions: [res.formattedAddress] },
-          [inputLat]: { ...prevState[inputLat], value: res.lat },
-          [inputLon]: { ...prevState[inputLon], value: res.lon },
+          [field]: {
+            ...prevState[field],
+            suggestions: res.formattedAddress ? [res.formattedAddress] : [],
+          },
         }));
       }
     },
@@ -65,6 +57,7 @@ export const useCoordinatesForm = () => {
     fieldName === FORM_INPUT_NAMES.searchPointB;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // Set the value for the right input
     Object.values(FORM_INPUT_NAMES).forEach((input) => {
       if (input === e.target.name) {
         setInputs((prevState) => ({
@@ -74,15 +67,28 @@ export const useCoordinatesForm = () => {
       }
     });
 
+    // Call Geocode API
     if (isSearchInput(e.target.name)) {
       const field =
         e.target.name === FORM_INPUT_NAMES.searchPointA
           ? FORM_INPUT_NAMES.searchPointA
           : FORM_INPUT_NAMES.searchPointB;
+
+      // Clear any existing error message
       setInputs((prevState) => ({
         ...prevState,
         [field]: { ...prevState[field], error: "" },
       }));
+
+      // If input is empty hide the suggestions and exit
+      if (e.target.value === "") {
+        setInputs((prevState) => ({
+          ...prevState,
+          [field]: { ...prevState[field], suggestions: [] },
+        }));
+        return;
+      }
+
       fetchCoordinates(e.target.value, field);
     }
   };
@@ -192,6 +198,45 @@ export const useCoordinatesForm = () => {
     );
   };
 
+  const handleSuggestionClick = async (
+    suggestion: string,
+    inputName: string
+  ) => {
+    // Figure out which search field
+    const searchInputName =
+      inputName === FORM_INPUT_NAMES.searchPointA
+        ? FORM_INPUT_NAMES.searchPointA
+        : FORM_INPUT_NAMES.searchPointB;
+
+    // Set the formatted address as the input value and clear suggestions
+    setInputs((prevState) => ({
+      ...prevState,
+      [searchInputName]: {
+        ...prevState[searchInputName],
+        value: suggestion,
+        suggestions: [],
+      },
+    }));
+
+    // Set lat and lon values in corresponding inputs
+    const res = await fetchCoordinatesFromAddress(suggestion);
+    if (!res.error) {
+      const latField =
+        inputName === FORM_INPUT_NAMES.searchPointA
+          ? FORM_INPUT_NAMES.lat1
+          : FORM_INPUT_NAMES.lat2;
+      const lonField =
+        inputName === FORM_INPUT_NAMES.searchPointA
+          ? FORM_INPUT_NAMES.lon1
+          : FORM_INPUT_NAMES.lon2;
+      setInputs((prevState) => ({
+        ...prevState,
+        [latField]: { ...prevState[latField], value: res.lat },
+        [lonField]: { ...prevState[lonField], value: res.lon },
+      }));
+    }
+  };
+
   return {
     handleSubmit,
     handleChange,
@@ -201,5 +246,6 @@ export const useCoordinatesForm = () => {
     handleUserLocationA,
     handleUserLocationB,
     kilometers,
+    handleSuggestionClick,
   };
 };
