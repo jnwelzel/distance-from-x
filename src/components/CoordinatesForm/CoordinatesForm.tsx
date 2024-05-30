@@ -40,15 +40,6 @@ export const CoordinatesForm: FC<ICoordinatesFormProps> = (props) => {
         handleSuggestionClick={handleSuggestionClick}
       />
 
-      <Button
-        variant="secondary"
-        className="col-span-12 md:col-span-2"
-        onClick={() => handleUserLocation(BUTTON_NAMES.myLocationA)}
-        disabled={buttons.myLocationA.isLoading}
-      >
-        Use my location
-      </Button>
-
       <FormInput
         label="Latitute"
         errorMessage={inputs.lat1.error}
@@ -73,6 +64,19 @@ export const CoordinatesForm: FC<ICoordinatesFormProps> = (props) => {
         containerClass="col-span-12 md:col-span-1"
       />
 
+      <Button variant="error" className="col-span-12 md:col-span-1">
+        Cancel
+      </Button>
+
+      <Button
+        variant="secondary"
+        className="col-span-12 md:col-span-1"
+        onClick={() => handleUserLocation(BUTTON_NAMES.myLocationA)}
+        disabled={buttons.myLocationA.isLoading}
+      >
+        Use my location
+      </Button>
+
       <p className="col-span-12 md:col-span-full font-bold">Point B</p>
 
       <FormInput
@@ -88,15 +92,6 @@ export const CoordinatesForm: FC<ICoordinatesFormProps> = (props) => {
         suggestions={inputs.searchPointB.suggestions}
         handleSuggestionClick={handleSuggestionClick}
       />
-
-      <Button
-        variant="secondary"
-        className="col-span-12 md:col-span-2"
-        onClick={() => handleUserLocation(BUTTON_NAMES.myLocationB)}
-        disabled={buttons.myLocationB.isLoading}
-      >
-        Use my location
-      </Button>
 
       <FormInput
         label="Latitude"
@@ -122,10 +117,20 @@ export const CoordinatesForm: FC<ICoordinatesFormProps> = (props) => {
         containerClass="col-span-12 md:col-span-1"
       />
 
+      <Button variant="error" className="col-span-12 md:col-span-1">
+        Cancel
+      </Button>
+
       <Button
-        type="submit"
-        className="col-span-12 md:col-span-2 md:place-self-center"
+        variant="secondary"
+        className="col-span-12 md:col-span-1"
+        onClick={() => handleUserLocation(BUTTON_NAMES.myLocationB)}
+        disabled={buttons.myLocationB.isLoading}
       >
+        Use my location
+      </Button>
+
+      <Button type="submit" className="col-span-12 md:col-span-2">
         Calculate
       </Button>
     </form>
