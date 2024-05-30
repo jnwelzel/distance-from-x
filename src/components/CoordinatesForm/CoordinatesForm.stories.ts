@@ -14,9 +14,12 @@ const meta = {
     handleChange: fn(),
     handleUserLocation: fn(),
     handleSuggestionClick: fn(),
+    handleCancelClick: fn(),
     buttons: {
       myLocationA: { isLoading: false },
       myLocationB: { isLoading: false },
+      cancelA: { isLoading: false },
+      cancelB: { isLoading: false },
     },
   },
 } satisfies Meta<typeof CoordinatesForm>;
