@@ -12,11 +12,13 @@ const meta = {
   args: {
     handleSubmit: fn(),
     handleChange: fn(),
-    isLoadingLocationA: false,
-    isLoadingLocationB: false,
     handleUserLocationA: fn(),
     handleUserLocationB: fn(),
     handleSuggestionClick: fn(),
+    buttons: {
+      myLocationA: { isLoading: false },
+      myLocationB: { isLoading: false },
+    },
   },
 } satisfies Meta<typeof CoordinatesForm>;
 

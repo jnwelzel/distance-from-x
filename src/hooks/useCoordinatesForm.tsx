@@ -6,7 +6,7 @@ import {
   isValidLatitude,
   isValidLongitude,
 } from "../helpers";
-import { FORM_INPUT_NAMES, type IFormState } from "../components";
+import { FORM_INPUT_NAMES, IButtons, type IFormState } from "../components";
 
 export const useCoordinatesForm = () => {
   const [inputs, setInputs] = useState<IFormState>({
@@ -18,8 +18,10 @@ export const useCoordinatesForm = () => {
     [FORM_INPUT_NAMES.searchPointB]: { value: "", error: "", suggestions: [] },
   });
 
-  const [isLoadingLocationA, setIsLoadingLocationA] = useState<boolean>(false);
-  const [isLoadingLocationB, setIsLoadingLocationB] = useState<boolean>(false);
+  const [buttons, setButtons] = useState<IButtons>({
+    myLocationA: { isLoading: false },
+    myLocationB: { isLoading: false },
+  });
 
   const [kilometers, setKilometers] = useState<number>(0);
 
@@ -152,10 +154,16 @@ export const useCoordinatesForm = () => {
 
   // TODO Extract this into more generic function
   const handleUserLocationA = () => {
-    setIsLoadingLocationA(true);
+    setButtons((prevState) => ({
+      ...prevState,
+      myLocationA: { ...prevState.myLocationA, isLoading: true },
+    }));
     navigator.geolocation.getCurrentPosition(
       (position: GeolocationPosition) => {
-        setIsLoadingLocationA(false);
+        setButtons((prevState) => ({
+          ...prevState,
+          myLocationA: { ...prevState.myLocationA, isLoading: false },
+        }));
         setInputs((prevState) => ({
           ...prevState,
           lat1: {
@@ -169,17 +177,26 @@ export const useCoordinatesForm = () => {
         }));
       },
       () => {
-        setIsLoadingLocationA(false);
+        setButtons((prevState) => ({
+          ...prevState,
+          myLocationA: { ...prevState.myLocationA, isLoading: false },
+        }));
       }
     );
   };
 
   // TODO Extract this into more generic function
   const handleUserLocationB = () => {
-    setIsLoadingLocationB(true);
+    setButtons((prevState) => ({
+      ...prevState,
+      myLocationB: { ...prevState.myLocationB, isLoading: true },
+    }));
     navigator.geolocation.getCurrentPosition(
       (position: GeolocationPosition) => {
-        setIsLoadingLocationB(false);
+        setButtons((prevState) => ({
+          ...prevState,
+          myLocationB: { ...prevState.myLocationB, isLoading: false },
+        }));
         setInputs((prevState) => ({
           ...prevState,
           lat2: {
@@ -193,7 +210,10 @@ export const useCoordinatesForm = () => {
         }));
       },
       () => {
-        setIsLoadingLocationB(false);
+        setButtons((prevState) => ({
+          ...prevState,
+          myLocationB: { ...prevState.myLocationB, isLoading: false },
+        }));
       }
     );
   };
@@ -241,8 +261,7 @@ export const useCoordinatesForm = () => {
     handleSubmit,
     handleChange,
     inputs,
-    isLoadingLocationA,
-    isLoadingLocationB,
+    buttons,
     handleUserLocationA,
     handleUserLocationB,
     kilometers,

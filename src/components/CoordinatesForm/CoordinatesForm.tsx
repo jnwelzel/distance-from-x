@@ -1,14 +1,13 @@
 import { FC } from "react";
 import { FormInput } from "../FormInput/FormInput";
 import { Button } from "../Button/Button";
-import type { IFormState } from "./state";
+import type { IButtons, IFormState } from "./state";
 
 interface ICoordinatesFormProps {
   handleSubmit: (e: React.FormEvent) => void;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   inputs: IFormState;
-  isLoadingLocationA: boolean;
-  isLoadingLocationB: boolean;
+  buttons: IButtons;
   handleUserLocationA: () => void;
   handleUserLocationB: () => void;
   handleSuggestionClick: SuggestionClickCallback;
@@ -19,8 +18,7 @@ export const CoordinatesForm: FC<ICoordinatesFormProps> = (props) => {
     handleSubmit,
     handleChange,
     inputs,
-    isLoadingLocationA,
-    isLoadingLocationB,
+    buttons,
     handleUserLocationA,
     handleUserLocationB,
     handleSuggestionClick,
@@ -47,7 +45,7 @@ export const CoordinatesForm: FC<ICoordinatesFormProps> = (props) => {
         variant="secondary"
         className="col-span-12 md:col-span-2"
         onClick={handleUserLocationA}
-        disabled={isLoadingLocationA}
+        disabled={buttons.myLocationA.isLoading}
       >
         Use my location
       </Button>
@@ -96,7 +94,7 @@ export const CoordinatesForm: FC<ICoordinatesFormProps> = (props) => {
         variant="secondary"
         className="col-span-12 md:col-span-2"
         onClick={handleUserLocationB}
-        disabled={isLoadingLocationB}
+        disabled={buttons.myLocationB.isLoading}
       >
         Use my location
       </Button>

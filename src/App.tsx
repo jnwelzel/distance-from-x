@@ -8,8 +8,7 @@ function App() {
     handleSubmit,
     handleChange,
     inputs,
-    isLoadingLocationA,
-    isLoadingLocationB,
+    buttons,
     handleUserLocationA,
     handleUserLocationB,
     kilometers,
@@ -35,8 +34,7 @@ function App() {
             handleSubmit={handleSubmit}
             handleChange={handleChange}
             inputs={inputs}
-            isLoadingLocationA={isLoadingLocationA}
-            isLoadingLocationB={isLoadingLocationB}
+            buttons={buttons}
             handleUserLocationA={handleUserLocationA}
             handleUserLocationB={handleUserLocationB}
             handleSuggestionClick={handleSuggestionClick}

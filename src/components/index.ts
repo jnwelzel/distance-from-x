@@ -4,3 +4,4 @@ export { CoordinatesForm } from "./CoordinatesForm/CoordinatesForm";
 export { FORM_INPUT_NAMES } from "./CoordinatesForm/state";
 export type { IFormState } from "./CoordinatesForm/state";
 export type { IFormInput } from "./CoordinatesForm/state";
+export type { IButtons } from "./CoordinatesForm/state";

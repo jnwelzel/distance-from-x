@@ -21,3 +21,11 @@ export interface IFormState {
   [FORM_INPUT_NAMES.searchPointA]: IFormInput;
   [FORM_INPUT_NAMES.searchPointB]: IFormInput;
 }
+
+interface IButton {
+  isLoading: boolean;
+}
+export interface IButtons {
+  myLocationA: IButton;
+  myLocationB: IButton;
+}
