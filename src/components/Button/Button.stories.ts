@@ -26,6 +26,13 @@ export const Primary: Story = {
   },
 };
 
+export const Default: Story = {
+  args: {
+    variant: "default",
+    children: "Default",
+  },
+};
+
 export const PrimaryDisabled: Story = {
   args: {
     variant: "primary",

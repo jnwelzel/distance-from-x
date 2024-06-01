@@ -67,7 +67,7 @@ export const CoordinatesForm: FC<ICoordinatesFormProps> = (props) => {
       />
 
       <Button
-        variant="error"
+        variant="default"
         className="col-span-12 md:col-span-1"
         onClick={() => {
           handleCancelClick(BUTTON_NAMES.cancelA);
@@ -127,7 +127,7 @@ export const CoordinatesForm: FC<ICoordinatesFormProps> = (props) => {
       />
 
       <Button
-        variant="error"
+        variant="default"
         className="col-span-12 md:col-span-1"
         onClick={() => {
           handleCancelClick(BUTTON_NAMES.cancelB);

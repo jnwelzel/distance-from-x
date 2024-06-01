@@ -13,4 +13,8 @@ Once the coordinates are in place the user can then calculate the distance. If a
 
 - [ ] Refactor state -> `useReducer()`
 - [ ] Add Playwright e2e tests
+- [ ] Autocomplete keyboard support
 - [ ] Copy coordinates to clipboard
+- [ ] Review ESLint/Prettier rules
+  - [ ] console.log
+  - [ ] line columns size
