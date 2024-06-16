@@ -1,14 +1,13 @@
 import { FC } from "react";
 import { FormInput } from "../FormInput/FormInput";
 import { Button } from "../Button/Button";
-import { BUTTON_NAMES, type IButtons, type IFormState } from "./state";
+import { BUTTON_NAMES, type IFormState } from "./state";
 import { MyLocationClickCallback, SuggestionClickCallback } from "../..";
 
 interface ICoordinatesFormProps {
   handleSubmit: (e: React.FormEvent) => void;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  inputs: IFormState;
-  buttons: IButtons;
+  state: IFormState;
   handleUserLocation: MyLocationClickCallback;
   handleSuggestionClick: SuggestionClickCallback;
   handleCancelClick: (button: BUTTON_NAMES) => void;
@@ -18,8 +17,7 @@ export const CoordinatesForm: FC<ICoordinatesFormProps> = (props) => {
   const {
     handleSubmit,
     handleChange,
-    inputs,
-    buttons,
+    state,
     handleUserLocation,
     handleSuggestionClick,
     handleCancelClick,
@@ -35,17 +33,17 @@ export const CoordinatesForm: FC<ICoordinatesFormProps> = (props) => {
         name="searchPointA"
         placeholder="Find a place"
         type="search"
-        value={inputs.searchPointA.value}
+        value={state.searchPointA.value}
         onChange={handleChange}
-        errorMessage={inputs.searchPointA.error}
-        suggestions={inputs.searchPointA.suggestions}
+        errorMessage={state.searchPointA.error}
+        suggestions={state.searchPointA.suggestions}
         handleSuggestionClick={handleSuggestionClick}
       />
 
       <FormInput
         label="Latitute"
-        errorMessage={inputs.lat1.error}
-        value={inputs.lat1.value}
+        errorMessage={state.lat1.error}
+        value={state.lat1.value}
         id="lat1"
         name="lat1"
         type="text"
@@ -55,9 +53,9 @@ export const CoordinatesForm: FC<ICoordinatesFormProps> = (props) => {
       />
 
       <FormInput
-        errorMessage={inputs.lon1.error}
+        errorMessage={state.lon1.error}
         label="Longitude"
-        value={inputs.lon1.value}
+        value={state.lon1.value}
         id="lon1"
         name="lon1"
         type="text"
@@ -81,7 +79,7 @@ export const CoordinatesForm: FC<ICoordinatesFormProps> = (props) => {
         variant="secondary"
         className="col-span-12 md:col-span-1"
         onClick={() => handleUserLocation(BUTTON_NAMES.myLocationA)}
-        disabled={buttons.myLocationA.isLoading}
+        disabled={state.myLocationA.isLoading}
       >
         Use my location
       </Button>
@@ -95,17 +93,17 @@ export const CoordinatesForm: FC<ICoordinatesFormProps> = (props) => {
         name="searchPointB"
         placeholder="Find a place"
         type="search"
-        value={inputs.searchPointB.value}
+        value={state.searchPointB.value}
         onChange={handleChange}
-        errorMessage={inputs.searchPointB.error}
-        suggestions={inputs.searchPointB.suggestions}
+        errorMessage={state.searchPointB.error}
+        suggestions={state.searchPointB.suggestions}
         handleSuggestionClick={handleSuggestionClick}
       />
 
       <FormInput
         label="Latitude"
-        errorMessage={inputs.lat2.error}
-        value={inputs.lat2.value}
+        errorMessage={state.lat2.error}
+        value={state.lat2.value}
         id="lat2"
         name="lat2"
         type="text"
@@ -115,9 +113,9 @@ export const CoordinatesForm: FC<ICoordinatesFormProps> = (props) => {
       />
 
       <FormInput
-        errorMessage={inputs.lon2.error}
+        errorMessage={state.lon2.error}
         label="Longitude"
-        value={inputs.lon2.value}
+        value={state.lon2.value}
         id="lon2"
         name="lon2"
         type="text"
@@ -141,7 +139,7 @@ export const CoordinatesForm: FC<ICoordinatesFormProps> = (props) => {
         variant="secondary"
         className="col-span-12 md:col-span-1"
         onClick={() => handleUserLocation(BUTTON_NAMES.myLocationB)}
-        disabled={buttons.myLocationB.isLoading}
+        disabled={state.myLocationB.isLoading}
       >
         Use my location
       </Button>

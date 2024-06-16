@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import "./App.css";
 import { CoordinatesForm } from "./components";
 import { useCoordinatesForm } from "./hooks";
 
@@ -7,12 +6,11 @@ function App() {
   const {
     handleSubmit,
     handleChange,
-    inputs,
-    buttons,
     handleUserLocation,
     kilometers,
     handleSuggestionClick,
     handleCancelClick,
+    state,
   } = useCoordinatesForm();
   const [miles, setMiles] = useState<number>(0);
 
@@ -31,10 +29,9 @@ function App() {
       <div className="md:max-w-3xl md:mx-auto p-4">
         <div className="grid grid-flow-row gap-4">
           <CoordinatesForm
+            state={state}
             handleSubmit={handleSubmit}
             handleChange={handleChange}
-            inputs={inputs}
-            buttons={buttons}
             handleUserLocation={handleUserLocation}
             handleSuggestionClick={handleSuggestionClick}
             handleCancelClick={handleCancelClick}

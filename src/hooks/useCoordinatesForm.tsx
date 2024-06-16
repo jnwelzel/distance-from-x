@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useReducer, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import {
   calculateDistance,
@@ -10,53 +10,38 @@ import {
 import {
   BUTTON_NAMES,
   FORM_INPUT_NAMES,
-  IButtons,
-  type IFormState,
+  FormActionTypes,
+  coordinatesFormReducer,
+  initialState,
 } from "../components";
 
 export const useCoordinatesForm = () => {
-  const [inputs, setInputs] = useState<IFormState>({
-    [FORM_INPUT_NAMES.lat1]: { value: "", error: "", suggestions: [] },
-    [FORM_INPUT_NAMES.lon1]: { value: "", error: "", suggestions: [] },
-    [FORM_INPUT_NAMES.lat2]: { value: "", error: "", suggestions: [] },
-    [FORM_INPUT_NAMES.lon2]: { value: "", error: "", suggestions: [] },
-    [FORM_INPUT_NAMES.searchPointA]: { value: "", error: "", suggestions: [] },
-    [FORM_INPUT_NAMES.searchPointB]: { value: "", error: "", suggestions: [] },
-  });
-
-  const [buttons, setButtons] = useState<IButtons>({
-    myLocationA: { isLoading: false },
-    myLocationB: { isLoading: false },
-    cancelA: { isLoading: false },
-    cancelB: { isLoading: false },
-  });
-
+  const [state, dispatch] = useReducer(coordinatesFormReducer, initialState);
   const [kilometers, setKilometers] = useState<number>(0);
 
   const fetchCoordinates = useDebouncedCallback(
-    async (searchValue: string, field: FORM_INPUT_NAMES) => {
+    async (
+      searchValue: string,
+      field: FORM_INPUT_NAMES.searchPointA | FORM_INPUT_NAMES.searchPointB
+    ) => {
       // Fetch data from Google
       const res = await fetchCoordinatesFromAddress(searchValue);
 
       if (res.error) {
-        setInputs((prevState) => ({
-          ...prevState,
-          [field]: { ...prevState[field], error: res.error, suggestions: [] },
-        }));
+        dispatch({ type: FormActionTypes.clearSuggestions, inputName: field });
+        dispatch({
+          type: FormActionTypes.setInputError,
+          inputName: field,
+          error: res.error,
+        });
       } else {
-        // Clear any existing error msgs
-        setInputs((prevState) => ({
-          ...prevState,
-          [field]: { ...prevState[field], error: "" },
-        }));
-
-        setInputs((prevState) => ({
-          ...prevState,
-          [field]: {
-            ...prevState[field],
-            suggestions: res.formattedAddress ? [res.formattedAddress] : [],
-          },
-        }));
+        // Clear any existing error msgs and set values
+        dispatch({ type: FormActionTypes.clearError, inputName: field });
+        dispatch({
+          type: FormActionTypes.setSuggestion,
+          searchInputName: field,
+          value: res.formattedAddress ? [res.formattedAddress] : [],
+        });
       }
     },
     500
@@ -70,10 +55,11 @@ export const useCoordinatesForm = () => {
     // Set the value for the right input
     Object.values(FORM_INPUT_NAMES).forEach((input) => {
       if (input === e.target.name) {
-        setInputs((prevState) => ({
-          ...prevState,
-          [input]: { ...prevState[input], value: e.target.value },
-        }));
+        dispatch({
+          type: FormActionTypes.changeInputValue,
+          inputName: input,
+          value: e.target.value,
+        });
       }
     });
 
@@ -85,17 +71,11 @@ export const useCoordinatesForm = () => {
           : FORM_INPUT_NAMES.searchPointB;
 
       // Clear any existing error message
-      setInputs((prevState) => ({
-        ...prevState,
-        [field]: { ...prevState[field], error: "" },
-      }));
+      dispatch({ type: FormActionTypes.clearError, inputName: field });
 
       // If input is empty hide the suggestions and exit
       if (e.target.value === "") {
-        setInputs((prevState) => ({
-          ...prevState,
-          [field]: { ...prevState[field], suggestions: [] },
-        }));
+        dispatch({ type: FormActionTypes.clearSuggestions, inputName: field });
         return;
       }
 
@@ -108,40 +88,38 @@ export const useCoordinatesForm = () => {
 
     // Validate inputs
     // Clear all errors
-    setInputs((prevState) => ({
-      ...prevState,
-      lat1: { ...prevState.lat1, error: "" },
-      lon1: { ...prevState.lon1, error: "" },
-      lat2: { ...prevState.lat2, error: "" },
-      lon2: { ...prevState.lon2, error: "" },
-    }));
+    dispatch({ type: FormActionTypes.clearErrors });
     let hasError = false;
-    if (!isValidLatitude(inputs.lat1.value ?? "")) {
-      setInputs((prevState) => ({
-        ...prevState,
-        lat1: { ...prevState.lat1, error: "Invalid latitude" },
-      }));
+    if (!isValidLatitude(state.lat1.value ?? "")) {
+      dispatch({
+        type: FormActionTypes.setInputError,
+        error: "Invalid latitude",
+        inputName: FORM_INPUT_NAMES.lat1,
+      });
       hasError = true;
     }
-    if (!isValidLongitude(inputs.lon1.value ?? "")) {
-      setInputs((prevState) => ({
-        ...prevState,
-        lon1: { ...prevState.lon1, error: "Invalid longitude" },
-      }));
+    if (!isValidLongitude(state.lon1.value ?? "")) {
+      dispatch({
+        type: FormActionTypes.setInputError,
+        error: "Invalid longitude",
+        inputName: FORM_INPUT_NAMES.lon1,
+      });
       hasError = true;
     }
-    if (!isValidLatitude(inputs.lat2.value ?? "")) {
-      setInputs((prevState) => ({
-        ...prevState,
-        lat2: { ...prevState.lat2, error: "Invalid latitude" },
-      }));
+    if (!isValidLatitude(state.lat2.value ?? "")) {
+      dispatch({
+        type: FormActionTypes.setInputError,
+        error: "Invalid latitude",
+        inputName: FORM_INPUT_NAMES.lat2,
+      });
       hasError = true;
     }
-    if (!isValidLongitude(inputs.lon2.value ?? "")) {
-      setInputs((prevState) => ({
-        ...prevState,
-        lon2: { ...prevState.lon2, error: "Invalid longitude" },
-      }));
+    if (!isValidLongitude(state.lon2.value ?? "")) {
+      dispatch({
+        type: FormActionTypes.setInputError,
+        error: "Invalid longitude",
+        inputName: FORM_INPUT_NAMES.lon2,
+      });
       hasError = true;
     }
 
@@ -152,49 +130,44 @@ export const useCoordinatesForm = () => {
 
     // Calculate distance
     const result = calculateDistance(
-      parseFloat(inputs.lat1.value),
-      parseFloat(inputs.lon1.value),
-      parseFloat(inputs.lat2.value),
-      parseFloat(inputs.lon2.value)
+      parseFloat(state.lat1.value),
+      parseFloat(state.lon1.value),
+      parseFloat(state.lat2.value),
+      parseFloat(state.lon2.value)
     );
     setKilometers(result);
   };
 
-  const handleUserLocation = (myLocationButton: BUTTON_NAMES) => {
-    setButtons((prevState) => ({
-      ...prevState,
-      [myLocationButton]: { ...prevState[myLocationButton], isLoading: true },
-    }));
+  const handleUserLocation = (
+    button: BUTTON_NAMES.myLocationA | BUTTON_NAMES.myLocationB
+  ) => {
+    dispatch({ type: FormActionTypes.setIsButtonLoading, button, value: true });
+
     navigator.geolocation.getCurrentPosition(
       async (position: GeolocationPosition) => {
         const { latitude, longitude } = position.coords;
         const latField =
-          myLocationButton === BUTTON_NAMES.myLocationA
+          button === BUTTON_NAMES.myLocationA
             ? FORM_INPUT_NAMES.lat1
             : FORM_INPUT_NAMES.lat2;
         const lonField =
-          myLocationButton === BUTTON_NAMES.myLocationA
+          button === BUTTON_NAMES.myLocationA
             ? FORM_INPUT_NAMES.lon1
             : FORM_INPUT_NAMES.lon2;
 
-        setButtons((prevState) => ({
-          ...prevState,
-          [myLocationButton]: {
-            ...prevState[myLocationButton],
-            isLoading: false,
-          },
-        }));
-        setInputs((prevState) => ({
-          ...prevState,
-          [latField]: {
-            ...prevState[latField],
-            value: latitude.toFixed(7),
-          },
-          [lonField]: {
-            ...prevState[lonField],
-            value: longitude.toFixed(7),
-          },
-        }));
+        dispatch({
+          type: FormActionTypes.setIsButtonLoading,
+          button,
+          value: false,
+        });
+
+        dispatch({
+          type: FormActionTypes.updateLatAndLon,
+          latInput: latField,
+          lonInput: lonField,
+          lat: latitude.toFixed(7),
+          lon: longitude.toFixed(7),
+        });
 
         // Fetch Geocode data for browser coordinates
         const geocodeData = await fetchAddressFromCoordinates(
@@ -203,27 +176,23 @@ export const useCoordinatesForm = () => {
         );
         // Show formatted address in search input
         const searchField =
-          myLocationButton === BUTTON_NAMES.myLocationA
+          button === BUTTON_NAMES.myLocationA
             ? FORM_INPUT_NAMES.searchPointA
             : FORM_INPUT_NAMES.searchPointB;
         if (!geocodeData.error) {
-          setInputs((prevState) => ({
-            ...prevState,
-            [searchField]: {
-              ...prevState[searchField],
-              value: geocodeData.formattedAddress,
-            },
-          }));
+          dispatch({
+            type: FormActionTypes.updateSearchValue,
+            searchInputName: searchField,
+            value: geocodeData.formattedAddress,
+          });
         }
       },
       () => {
-        setButtons((prevState) => ({
-          ...prevState,
-          [myLocationButton]: {
-            ...prevState[myLocationButton],
-            isLoading: false,
-          },
-        }));
+        dispatch({
+          type: FormActionTypes.setIsButtonLoading,
+          button,
+          value: false,
+        });
       }
     );
   };
@@ -232,72 +201,69 @@ export const useCoordinatesForm = () => {
     suggestion: string,
     inputName: string
   ) => {
-    // Figure out which search field
+    // Figure out which search field and set suggestion as input value
     const searchInputName =
       inputName === FORM_INPUT_NAMES.searchPointA
         ? FORM_INPUT_NAMES.searchPointA
         : FORM_INPUT_NAMES.searchPointB;
 
-    // Set the formatted address as the input value and clear suggestions
-    setInputs((prevState) => ({
-      ...prevState,
-      [searchInputName]: {
-        ...prevState[searchInputName],
-        value: suggestion,
-        suggestions: [],
-      },
-    }));
+    dispatch({
+      type: FormActionTypes.updateSearchValue,
+      searchInputName,
+      value: suggestion,
+    });
+    dispatch({
+      type: FormActionTypes.clearSuggestions,
+      inputName: searchInputName,
+    });
 
-    // Set lat and lon values in corresponding inputs
     const res = await fetchCoordinatesFromAddress(suggestion);
     if (!res.error) {
-      const latField =
+      // Set lat and lon values in corresponding inputs
+      const latInput =
         inputName === FORM_INPUT_NAMES.searchPointA
           ? FORM_INPUT_NAMES.lat1
           : FORM_INPUT_NAMES.lat2;
-      const lonField =
+      const lonInput =
         inputName === FORM_INPUT_NAMES.searchPointA
           ? FORM_INPUT_NAMES.lon1
           : FORM_INPUT_NAMES.lon2;
-      setInputs((prevState) => ({
-        ...prevState,
-        [latField]: { ...prevState[latField], value: res.lat },
-        [lonField]: { ...prevState[lonField], value: res.lon },
-      }));
+      dispatch({
+        type: FormActionTypes.updateLatAndLon,
+        latInput,
+        lonInput,
+        lat: res?.lat,
+        lon: res.lon,
+      });
     }
   };
 
   const handleCancelClick = (button: BUTTON_NAMES) => {
-    const searchField =
+    const searchInput =
       button === BUTTON_NAMES.cancelA
         ? FORM_INPUT_NAMES.searchPointA
         : FORM_INPUT_NAMES.searchPointB;
-    const latField =
+    const latInput =
       button === BUTTON_NAMES.cancelA
         ? FORM_INPUT_NAMES.lat1
         : FORM_INPUT_NAMES.lat2;
-    const lonField =
+    const lonInput =
       button === BUTTON_NAMES.cancelA
         ? FORM_INPUT_NAMES.lon1
         : FORM_INPUT_NAMES.lon2;
-    setInputs((prevState) => ({
-      ...prevState,
-      [searchField]: {
-        ...prevState[searchField],
-        value: "",
-        error: "",
-        suggestions: [],
-      },
-      [latField]: { ...prevState[latField], value: "", error: "" },
-      [lonField]: { ...prevState[lonField], value: "", error: "" },
-    }));
+
+    dispatch({
+      type: FormActionTypes.clearPointForm,
+      searchInput,
+      latInput,
+      lonInput,
+    });
   };
 
   return {
     handleSubmit,
     handleChange,
-    inputs,
-    buttons,
+    state,
     handleUserLocation,
     kilometers,
     handleSuggestionClick,

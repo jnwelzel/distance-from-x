@@ -11,7 +11,8 @@ Once the coordinates are in place the user can then calculate the distance. If a
 
 # TODOs
 
-- [ ] Refactor state -> `useReducer()`
+- [x] Refactor state -> `useReducer()`
+- [x] Update search input with geocoding from browser's coords
 - [ ] Add Playwright e2e tests
 - [ ] Autocomplete keyboard support
 - [ ] Copy coordinates to clipboard

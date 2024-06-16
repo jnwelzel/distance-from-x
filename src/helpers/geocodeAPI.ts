@@ -1,9 +1,9 @@
 const API_KEY = "AIzaSyBpDsSsGM3OqVg_mAaHN_JOBkCkHR5VQvI";
 
 interface GeocodeResponse {
-  lat?: string;
-  lon?: string;
-  formattedAddress?: "";
+  lat: string;
+  lon: string;
+  formattedAddress: "";
   error?: string;
 }
 
@@ -22,10 +22,18 @@ const getGeocodeData = async (url: string): Promise<GeocodeResponse> => {
     } else {
       return {
         error: `Geocoding API error: ${data.status}`,
+        lat: "",
+        lon: "",
+        formattedAddress: "",
       };
     }
   } catch (e) {
-    return { error: `Error fetching data from Geocoding API: ${e}` };
+    return {
+      error: `Error fetching data from Geocoding API: ${e}`,
+      lat: "",
+      lon: "",
+      formattedAddress: "",
+    };
   }
 };
 
