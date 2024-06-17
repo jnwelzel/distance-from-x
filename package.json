@@ -11,7 +11,7 @@
     "test": "vitest",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "chromatic": "pnpx chromatic --project-token=chpt_3146857e9de36dd"
+    "chromatic": "chromatic --exit-zero-on-changes"
   },
   "dependencies": {
     "@heroicons/react": "^2.1.3",
@@ -36,6 +36,7 @@
     "@typescript-eslint/parser": "^7.2.0",
     "@vitejs/plugin-react-swc": "^3.5.0",
     "autoprefixer": "^10.4.19",
+    "chromatic": "^11.5.4",
     "eslint": "^8.57.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.6",

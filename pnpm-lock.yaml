@@ -69,6 +69,9 @@ importers:
       autoprefixer:
         specifier: ^10.4.19
         version: 10.4.19(postcss@8.4.38)
+      chromatic:
+        specifier: ^11.5.4
+        version: 11.5.4
       eslint:
         specifier: ^8.57.0
         version: 8.57.0
@@ -2095,8 +2098,8 @@ packages:
     resolution: {integrity: sha512-bIomtDF5KGpdogkLd9VspvFzk9KfpyyGlS8YFVZl7TGPBHL5snIOnxeshwVgPteQ9b4Eydl+pVbIyE1DcvCWgQ==}
     engines: {node: '>=10'}
 
-  chromatic@11.4.0:
-    resolution: {integrity: sha512-/O6OwEUckqKTBGbm9KvYsR/eKCXy4s2eelO38yyfimBIJiL8+TS/pVnBqdtzUqO2hVK4GjrFiea9CnZUG9Akzw==}
+  chromatic@11.5.4:
+    resolution: {integrity: sha512-+J+CopeUSyGUIQJsU6X7CfvSmeVBs0j6LZ9AgF4+XTjI4pFmUiUXsTc00rH9x9W1jCppOaqDXv2kqJJXGDK3mA==}
     hasBin: true
     peerDependencies:
       '@chromatic-com/cypress': ^0.*.* || ^1.0.0
@@ -5315,7 +5318,7 @@ snapshots:
 
   '@chromatic-com/storybook@1.4.0(react@18.3.1)':
     dependencies:
-      chromatic: 11.4.0
+      chromatic: 11.5.4
       filesize: 10.1.2
       jsonfile: 6.1.0
       react-confetti: 6.1.0(react@18.3.1)
@@ -7063,7 +7066,7 @@ snapshots:
 
   chownr@2.0.0: {}
 
-  chromatic@11.4.0: {}
+  chromatic@11.5.4: {}
 
   citty@0.1.6:
     dependencies:
