@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "test": "vitest",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "chromatic": "pnpx chromatic --project-token=chpt_3146857e9de36dd"
   },
   "dependencies": {
     "@heroicons/react": "^2.1.3",
