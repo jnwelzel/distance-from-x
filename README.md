@@ -11,7 +11,7 @@ Once the coordinates are in place the user can then calculate the distance. If a
 
 # Storybook
 
-https://666fe71a68e95a40107cd295-ktfgulgoar.chromatic.com/
+[Chromatic](https://www.chromatic.com/library?appId=666fe71a68e95a40107cd295)
 
 # TODOs
 
